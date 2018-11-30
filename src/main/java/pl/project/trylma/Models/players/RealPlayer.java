@@ -29,6 +29,7 @@ public class RealPlayer extends AbstractPlayer {
   // -Sprawdza czy poprawny, tzn czy znajduje sie na liscie availableMoves;     //isMoveCorrect();
   // -Jezeli poprawny
   //        break;
+  // -Po pętli wykonuje ruch;
   public Move makeMove() {
     return null;
   }

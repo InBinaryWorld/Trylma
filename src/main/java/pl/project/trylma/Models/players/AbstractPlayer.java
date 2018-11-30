@@ -1,16 +1,16 @@
 package pl.project.trylma.Models.players;
 
-import pl.project.trylma.Models.Coord;
 import pl.project.trylma.Models.Move;
 import pl.project.trylma.Models.Owner;
 import pl.project.trylma.Models.boards.Board;
-import pl.project.trylma.Models.pawn.IPawn;
-
-import java.util.List;
 
 public abstract class AbstractPlayer implements IPlayer {
   Owner id;               //enum: numer gracza
   Board board;            //instancja aktualnej mapy;
+
+  public Owner getId() {
+    return id;
+  }
 
   private void setId(Owner id) {
     this.id = id;
