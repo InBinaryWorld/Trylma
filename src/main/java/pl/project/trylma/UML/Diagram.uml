@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="300.0" y="430.0">pl.project.trylma.Models.Owner</node>
+    <node x="118.0" y="334.0">pl.project.trylma.Models.players.RealPlayer</node>
+    <node x="429.0" y="553.0">pl.project.trylma.Models.pawn.Pawn</node>
+    <node x="714.25" y="430.0">pl.project.trylma.Models.Move</node>
+    <node x="386.5" y="268.0">pl.project.trylma.Models.boards.MainBoard</node>
+    <node x="0.0" y="430.0">pl.project.trylma.Trylma</node>
+    <node x="0.0" y="345.0">pl.project.trylma.Models.players.BotPlayer</node>
+    <node x="18.0" y="189.0">pl.project.trylma.Models.players.AbstractPlayer</node>
+    <node x="531.25" y="430.0">pl.project.trylma.Models.Field</node>
+    <node x="303.0" y="0.0">pl.project.trylma.Models.boards.IBoard</node>
+    <node x="0.0" y="747.0">pl.project.trylma.Models.Coord</node>
+    <node x="2.0" y="0.0">pl.project.trylma.Models.players.IPlayer</node>
+    <node x="361.5" y="167.0">pl.project.trylma.Models.boards.AbstractBoard</node>
+    <node x="432.25" y="452.0">pl.project.trylma.Models.pawn.IPawn</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pl.project.trylma.Models.boards.AbstractBoard" target="pl.project.trylma.Models.boards.IBoard">
+      <point x="0.0" y="-25.5" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="pl.project.trylma.Models.players.AbstractPlayer" target="pl.project.trylma.Models.players.IPlayer">
+      <point x="0.0" y="-47.5" />
+      <point x="0.0" y="69.5" />
+    </edge>
+    <edge source="pl.project.trylma.Models.players.BotPlayer" target="pl.project.trylma.Models.players.AbstractPlayer">
+      <point x="0.0" y="-14.5" />
+      <point x="49.0" y="309.0" />
+      <point x="68.25" y="309.0" />
+      <point x="-50.25" y="47.5" />
+    </edge>
+    <edge source="pl.project.trylma.Models.pawn.Pawn" target="pl.project.trylma.Models.Field">
+      <point x="53.5" y="-25.5" />
+      <point x="589.5" y="528.0" />
+      <point x="600.25" y="528.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="pl.project.trylma.Models.boards.MainBoard" target="pl.project.trylma.Models.boards.AbstractBoard">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="pl.project.trylma.Models.players.RealPlayer" target="pl.project.trylma.Models.players.AbstractPlayer">
+      <point x="0.0" y="-25.5" />
+      <point x="188.0" y="309.0" />
+      <point x="168.75" y="309.0" />
+      <point x="50.25" y="47.5" />
+    </edge>
+    <edge source="pl.project.trylma.Models.pawn.Pawn" target="pl.project.trylma.Models.pawn.IPawn">
+      <point x="-53.5" y="-25.5" />
+      <point x="482.5" y="528.0" />
+      <point x="471.75" y="528.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="215.0" y="292.0" />
+  <SelectedNodes>
+    <node>pl.project.trylma.Models.players.IPlayer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
