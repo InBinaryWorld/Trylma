@@ -1,6 +1,6 @@
 package pl.project.trylma.Models;
 
 public class Move {
-  Coord from;
+  Field from;
   Coord to;
 }

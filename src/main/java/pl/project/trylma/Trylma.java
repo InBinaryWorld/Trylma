@@ -11,45 +11,50 @@ public class Trylma {
   private List<IPlayer> players;
   private MainBoard mainBoard;
   private int curPlayer;
+  private int numPlayers;
 
-  //TODO;
-  public Trylma(){}
+  public Trylma(){
+    //TODO getInstance();
+  }
 
-  //TODO: Jakaś nieskończona pętla z logiką gry przerywana zakończeniem rozgrywki.
   void startGame() {
+    while (true) {
+      //TODO:
+      // - CurPlayer wykonuje ruch i zwraca wykonany,              //currentPlayerMove();
+      //    Jezeli curPlayer opuscil grę
+      //    to zwraca NULL. Tak samo w przypadku
+      //    gdy gracz chce ominac kolejkę.
+      // - sprawdz czy zwrocony ruch jest NULL. Jesli nie to:
+      //          - przechowaj ten ruch,
+      //          - poinformuj graczy o wykonanym,                //sendMoveToPlayer();
+      // - Jezeli ktos wygral                                     //hasWinner();
+      //          - zakoncz gre                                   //end();
+      // - przejdź do kolejnego gracza
+    }
   }
 
-  //TODO;
-  void currentPlayerMove(){
+  Move currentPlayerMove(){
+    //TODO: zwraca wynik ruchu playera. Czyli np:
+    // return Player[curPlayer].makeMove();
+    return null;
   }
 
-  //TODO;
-  synchronized void makeMoveOnBoard(Move move) {
-  }
-
-  //TODO;
   void sendMoveToPlayers(Move move) {
+    //TODO: kazdy gracz wysyla informacje do swojego klienta o wykonanym ruchu move;
   }
 
-  //TODO;
-  void sendMessageToPlayers(String message) {
+  private int hasWinner(){
+    //TODO: sprawdza czy jakis gracz z Player[] wygral.
+    //Jezeli ktos wygral to zwroc int danego gracza,
+    //w przeciwnym wypadku zwroc -1;
+    return 0;
   }
 
-  //TODO;
-  void playerLeftGame() {
+  void end(int winner) {
+    //TODO: wysilij do klientow informacje o koncu gry;
   }
 
-  // TODO;
-  void callEndGame(int winner) {
-  }
-
-  //TODO;
   void addPlayer(IPlayer player) {
+    //TODO: do tablicy dodaj gracza;
   }
-
-  //TODO;
-  void removePlayer(Owner id) {
-  }
-
-
 }
