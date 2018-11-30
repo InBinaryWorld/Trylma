@@ -1,15 +1,14 @@
 package pl.project.trylma;
 
 import pl.project.trylma.Models.Move;
-import pl.project.trylma.Models.Owner;
-import pl.project.trylma.Models.boards.MainBoard;
+import pl.project.trylma.Models.boards.Board;
 import pl.project.trylma.Models.players.IPlayer;
 
 import java.util.List;
 
 public class Trylma {
   private List<IPlayer> players;
-  private MainBoard mainBoard;
+  private Board board;
   private int curPlayer;
   private int numPlayers;
 
