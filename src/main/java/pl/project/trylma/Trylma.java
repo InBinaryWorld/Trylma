@@ -1,7 +1,7 @@
 package pl.project.trylma;
 
 import pl.project.trylma.Models.Move;
-import pl.project.trylma.Models.boards.Board;
+import pl.project.trylma.Models.board.Board;
 import pl.project.trylma.Models.players.IPlayer;
 
 import java.util.List;

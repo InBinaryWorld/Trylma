@@ -16,8 +16,16 @@ package pl.project.trylma;
  *
  */
 
-public class Server {
-  //TODO;
-  public static void main(String[] args) {}
+import pl.project.trylma.Models.Coord;
+import pl.project.trylma.Models.board.Board;
+import pl.project.trylma.Models.board.IBoard;
 
+public class Server {
+  public static void main(String[] args) {
+    IBoard board = Board.getInstance();
+    ((Board) board).printAr();
+    Coord coord = ((Board) board).getOppositeTop(new Coord(12, 0));
+    ((Board) board).setField(coord.getX(), coord.getY(), 1);
+    ((Board) board).printAr();
+  }
 }
