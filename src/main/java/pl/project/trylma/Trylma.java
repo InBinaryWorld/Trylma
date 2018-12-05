@@ -44,8 +44,9 @@ public class Trylma {
 
   private int hasWinner(){
     //TODO: sprawdza czy jakis gracz z Player[] wygral.
-    //Jezeli ktos wygral to zwroc int danego gracza,
-    //w przeciwnym wypadku zwroc -1;
+    //Jżeli jest zwyciężca to sprawdza którym on jest na liście i go zwróć jego pozycje na niej;
+    //NONE=Brak zwyciężcy
+    //  - zwroc -1;
     return 0;
   }
 

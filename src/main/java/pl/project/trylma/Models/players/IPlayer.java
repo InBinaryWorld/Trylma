@@ -10,6 +10,8 @@ public interface IPlayer {
 
   Move makeMove();
 
+  Owner getId();
+
   //TODO: wysyla komunikat o akcji ktora ma nastapic;
   void sendMessage(String command);
 }
