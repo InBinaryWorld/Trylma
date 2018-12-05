@@ -12,7 +12,7 @@ public class Trylma {
   private int curPlayer;
   private int numPlayers;
 
-  public Trylma(){
+  Trylma(){
     //TODO getInstance();
   }
 
@@ -56,5 +56,37 @@ public class Trylma {
 
   void addPlayer(IPlayer player) {
     //TODO: do tablicy dodaj gracza;
+  }
+
+  public List<IPlayer> getPlayers() {
+    return players;
+  }
+
+  public void setPlayers(List<IPlayer> players) {
+    this.players = players;
+  }
+
+  public Board getBoard() {
+    return board;
+  }
+
+  public void setBoard(Board board) {
+    this.board = board;
+  }
+
+  public int getCurPlayer() {
+    return curPlayer;
+  }
+
+  public void setCurPlayer(int curPlayer) {
+    this.curPlayer = curPlayer;
+  }
+
+  public int getNumPlayers() {
+    return numPlayers;
+  }
+
+  void setNumPlayers(int numPlayers) {
+    this.numPlayers = numPlayers;
   }
 }

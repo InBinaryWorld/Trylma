@@ -8,7 +8,7 @@ import pl.project.trylma.Models.players.AbstractPlayer;
 import java.util.List;
 
 public class BotPlayer extends AbstractPlayer {
-  BotPlayer(Owner id) {
+  public BotPlayer(Owner id) {
     super(id);
   }
 
