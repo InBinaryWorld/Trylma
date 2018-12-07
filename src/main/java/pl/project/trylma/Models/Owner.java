@@ -1,5 +1,24 @@
 package pl.project.trylma.Models;
 
+/**
+ * Enumy reprezentuja inty, to pomaga mi odnalezc sie na mapie.
+ * Stad dodatkowe metody, ktorych nie bylo. Tobie nie powinno
+ * to zmieniac niczego w strukturze. Jakby co to dzwon/pisz.
+ */
 public enum Owner {
-  FIRST,SECOND,THIRD,FOURTH,FIVETH,SIXTH,NONE
+  NONE(7),
+  FIRST(1),
+  SECOND(2),
+  THIRD(3),
+  FOURTH(4),
+  FIVETH(5),
+  SIXTH(6);
+
+  private final int value;
+  private Owner(int v) {
+    this.value = v;
+  }
+  public int getValue() {
+    return value;
+  }
 }

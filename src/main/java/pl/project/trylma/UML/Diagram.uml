@@ -3,38 +3,40 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="135.0" y="749.0">pl.project.trylma.Server</node>
-    <node x="325.0" y="520.0">pl.project.trylma.Models.Owner</node>
-    <node x="225.0" y="335.0">pl.project.trylma.Models.players.RealPlayer</node>
-    <node x="637.0" y="520.0">pl.project.trylma.Models.Move</node>
-    <node x="475.0" y="0.0">pl.project.trylma.Trylma</node>
-    <node x="0.0" y="368.5">pl.project.trylma.Models.players.BotPlayer</node>
-    <node x="100.5" y="145.0">pl.project.trylma.Models.players.AbstractPlayer</node>
-    <node x="0.0" y="749.0">pl.project.trylma.Models.Coord</node>
-    <node x="454.0" y="520.0">pl.project.trylma.Models.Field</node>
-    <node x="0.0" y="520.0">pl.project.trylma.Models.boards.Board</node>
-    <node x="112.5" y="0.0">pl.project.trylma.Models.players.IPlayer</node>
+    <node x="397.0" y="542.0">pl.project.trylma.Server</node>
+    <node x="212.0" y="542.0">pl.project.trylma.Models.Owner</node>
+    <node x="0.0" y="335.0">pl.project.trylma.Models.players.RealPlayer</node>
+    <node x="265.0" y="379.5">pl.project.trylma.Models.players.BotPlayer</node>
+    <node x="515.0" y="0.0">pl.project.trylma.Trylma</node>
+    <node x="116.0" y="145.0">pl.project.trylma.Models.players.AbstractPlayer</node>
+    <node x="0.0" y="710.0">pl.project.trylma.Models.Field</node>
+    <node x="24.5" y="542.0">pl.project.trylma.Models.Coord</node>
+    <node x="142.5" y="0.0">pl.project.trylma.Models.players.IPlayer</node>
   </nodes>
   <notes />
   <edges>
+    <edge source="pl.project.trylma.Models.Field" target="pl.project.trylma.Models.Coord">
+      <point x="0.0" y="-37.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
     <edge source="pl.project.trylma.Models.players.AbstractPlayer" target="pl.project.trylma.Models.players.IPlayer">
       <point x="0.0" y="-70.0" />
       <point x="0.0" y="47.5" />
     </edge>
     <edge source="pl.project.trylma.Models.players.BotPlayer" target="pl.project.trylma.Models.players.AbstractPlayer">
       <point x="0.0" y="-36.5" />
-      <point x="102.5" y="310.0" />
-      <point x="157.75" y="310.0" />
-      <point x="-57.25" y="70.0" />
+      <point x="367.5" y="310.0" />
+      <point x="309.5" y="310.0" />
+      <point x="64.5" y="70.0" />
     </edge>
     <edge source="pl.project.trylma.Models.players.RealPlayer" target="pl.project.trylma.Models.players.AbstractPlayer">
-      <point x="0.0" y="-70.0" />
-      <point x="327.5" y="310.0" />
-      <point x="272.25" y="310.0" />
-      <point x="57.25" y="70.0" />
+      <point x="0.0" y="-81.0" />
+      <point x="122.5" y="310.0" />
+      <point x="180.5" y="310.0" />
+      <point x="-64.5" y="70.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="215.0" y="292.0" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="215.0" y="423.0" />
   <SelectedNodes>
     <node>pl.project.trylma.Models.players.IPlayer</node>
   </SelectedNodes>

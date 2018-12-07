@@ -1,6 +1,6 @@
 package pl.project.trylma;
 
-import pl.project.trylma.Models.Move;
+import pl.project.trylma.Models.Movement;
 import pl.project.trylma.Models.board.Board;
 import pl.project.trylma.Models.players.IPlayer;
 
@@ -32,13 +32,13 @@ public class Trylma {
     }
   }
 
-  Move currentPlayerMove(){
+  Movement currentPlayerMove(){
     //TODO: zwraca wynik ruchu playera. Czyli np:
     // return Player[curPlayer].makeMove();
     return null;
   }
 
-  void sendMoveToPlayers(Move move) {
+  void sendMoveToPlayers(Movement move) {
     //TODO: kazdy gracz wysyla informacje do swojego klienta o wykonanym ruchu move;
   }
 

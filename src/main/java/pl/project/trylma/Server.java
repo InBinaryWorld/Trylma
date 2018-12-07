@@ -1,25 +1,35 @@
 package pl.project.trylma;
 
-import pl.project.trylma.Models.Owner;
-import pl.project.trylma.Models.PlayerOptions;
+import pl.project.trylma.Models.*;
+import pl.project.trylma.Models.board.Board;
+import pl.project.trylma.Models.board.IBoard;
 import pl.project.trylma.Models.players.BotPlayer;
 import pl.project.trylma.Models.players.RealPlayer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.List;
 
 public class Server {
   private static Owner currentOwner;
 
   public static void main(String[] args) throws IOException {
-    /*
-    IBoard board = Board.getInstance();
-    ((Board) board).printAr();
-    Coord coord = ((Board) board).getOppositeTop(new Coord(12, 0));
-    ((Board) board).setField(coord.getX(), coord.getY(), 1);
-    ((Board) board).printAr();
-    */
 
+    //zwraca instancje klasy Board
+    IBoard board = Board.getInstance();
+    //zwraca wierzcholek w zaleznosci od ownera
+    ((Board) board).getFinalCoordsFor(Owner.SECOND);
+    //drukuje mape z indeksami jakbys potrzebowal
+    ((Board) board).printAr();
+    //tworze obiekt movement, zeby wykonac instrukcje makeMove na mapie
+    Movement movement = new Movement(new Coord(12, 0),
+                                     new Coord(11, 13),
+                                     Owner.SECOND);
+    //Wykonuje ruch
+    ((Board) board).makeMove(movement);
+    //Zwraca mozliwe ruchy dla danego pola Field
+    List<Coord> av = board.getAvailableMoves(new Field(new Coord(11, 13), Owner.SECOND));
+    /*
     ServerSocket listener = new ServerSocket(8901);
     PlayerOptions playerOptions;
     currentOwner=Owner.FIRST;
@@ -50,7 +60,7 @@ public class Server {
       }
     } finally {
       listener.close();
-    }
+    }*/
   }
 
   //TODO: Reset Board
