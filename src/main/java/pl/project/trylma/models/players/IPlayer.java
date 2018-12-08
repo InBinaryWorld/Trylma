@@ -14,4 +14,6 @@ public interface IPlayer {
   void sendMove(Movement movement);
 
   void endGame(Owner winner);
+
+  boolean isConnected();
 }

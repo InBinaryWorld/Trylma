@@ -5,8 +5,8 @@ package pl.project.trylma.models;
  * Zmienilem nazwe z Move na Movement.
  */
 public class Movement {
-  Field from;
-  Coord to;
+  private Field from;
+  private Coord to;
 
   public Owner getOwner() {
     return from.getOwner();

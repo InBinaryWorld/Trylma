@@ -13,7 +13,8 @@ public interface IBoard {
   List<Coord> getFinalCoordsFor(Owner owner);
   Coord getOppositeTop(Owner owner);
   void makeMove(Movement movement);
-
-
+  //new ones:
+  void resetBoard();
+  boolean isMovementCorrect(Movement movement);
 
 }

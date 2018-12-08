@@ -42,7 +42,7 @@ public final class Board implements IBoard {
     findAndReplace(1, Owner.SECOND.getValue(), 8, 17, 0, 8);
     findAndReplace(1, Owner.THIRD.getValue(), 17, 26, 0, 8);
     findAndReplace(1, Owner.FOURTH.getValue(), 0, 7, 8, 17);
-    findAndReplace(1, Owner.FIVETH.getValue(), 8, 17, 8, 17);
+    findAndReplace(1, Owner.FIFTH.getValue(), 8, 17, 8, 17);
     findAndReplace(1, Owner.SIXTH.getValue(), 17, 26, 8, 17);
   }
 
@@ -269,6 +269,16 @@ public final class Board implements IBoard {
   public void makeMove(Movement movement) {
     releaseField(movement.getFrom());
     setField(movement.getTo().getX(), movement.getTo().getY(), movement.getOwner().getValue());
+  }
+
+  @Override
+  public void resetBoard() {
+
+  }
+
+  @Override
+  public boolean isMovementCorrect(Movement movement) {
+    return false;
   }
 
   public void setField(int x, int y, int var) {

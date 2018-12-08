@@ -1,5 +1,6 @@
 package pl.project.trylma;
 
+import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
 import pl.project.trylma.models.players.BotPlayer;
@@ -49,33 +50,39 @@ public class Server {
         trylma.addPlayer(player);
         log("Waiting for players...");
         for (int i = 1; i < playerOptions.getReal(); i++) {
-          player = new RealPlayer(listener.accept(), getNextOwner());
+          nextOwner();
+          while (true) {
+            try {
+              player = new RealPlayer(listener.accept(), currentOwner);
+              break;
+            } catch (DisconnectException | IOException ignored) {
+            }
+          }
           player.sendMessage("Waiting for other players...");
           trylma.addPlayer(player);
         }
         log("Adding bots...");
-        for (int i = 0; i < playerOptions.getBot(); i++)
-          trylma.addPlayer(new BotPlayer(getNextOwner()));
+        for (int i = 0; i < playerOptions.getBot(); i++) {
+          nextOwner();
+          trylma.addPlayer(new BotPlayer(currentOwner));
+        }
         trylma.setNumPlayers(playerOptions.getNumOfPlayers());
         log("Start Game");
         trylma.startGame();
         log("End Game");
-      } catch (IOException e) {
-        log("IOException");
+      } catch (DisconnectException | IOException e) {
+        log("First Player Disconected, Game is Reset");
       }
       reset();
     }
 
   }
 
-
-  //TODO: Reset Board
   private static void reset() {
     currentOwner = Owner.FIRST;
-
   }
 
-  public static Owner getNextOwner() {
+  private static void nextOwner() {
     switch (currentOwner) {
       case FIRST:
         currentOwner = Owner.SECOND;
@@ -87,16 +94,15 @@ public class Server {
         currentOwner = Owner.FOURTH;
         break;
       case FOURTH:
-        currentOwner = Owner.FIVETH;
+        currentOwner = Owner.FIFTH;
         break;
-      case FIVETH:
+      case FIFTH:
         currentOwner = Owner.SIXTH;
         break;
       case SIXTH:
         currentOwner = Owner.FIRST;
         break;
     }
-    return currentOwner;
   }
 
   private static void log(String message) {

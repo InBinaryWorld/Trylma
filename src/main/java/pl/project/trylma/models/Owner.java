@@ -11,7 +11,7 @@ public enum Owner {
   SECOND(2),
   THIRD(3),
   FOURTH(4),
-  FIVETH(5),
+  FIFTH(5),
   SIXTH(6);
 
   private final int value;

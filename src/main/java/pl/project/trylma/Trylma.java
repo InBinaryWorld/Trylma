@@ -6,6 +6,7 @@ import pl.project.trylma.models.board.Board;
 import pl.project.trylma.models.board.IBoard;
 import pl.project.trylma.models.players.IPlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class Trylma {
@@ -16,6 +17,8 @@ class Trylma {
 
   Trylma(){
     board = Board.getInstance();
+    board.resetBoard();
+    players = new ArrayList<>();
     curPlayer=0;
   }
 
@@ -23,8 +26,13 @@ class Trylma {
     int winner;
     Movement movement;
     while (true) {
+      if(numOfConnectedPlayers() < 3){
+        endGame(Owner.NONE);
+        break;
+      }
       movement = currentPlayerMove();
       if (movement!=null){
+        board.makeMove(movement);
         sendMoveToPlayers(movement);
       }
       if((winner =hasWinner())!=-1){
@@ -38,7 +46,6 @@ class Trylma {
     }
   }
 
-  //null - jeśli pomija kolejkę, lub jeśli opuścił grę.
   private Movement currentPlayerMove(){
     return players.get(curPlayer).makeMove();
   }
@@ -76,6 +83,15 @@ class Trylma {
 
   void setNumPlayers(int numPlayers) {
     this.numPlayers = numPlayers;
+  }
+
+  private int numOfConnectedPlayers(){
+    int i =0;
+    for (IPlayer player : players) {
+      if (player.isConnected())
+        i++;
+    }
+    return i;
   }
 
 }
