@@ -1,4 +1,4 @@
-package pl.project.trylma.Models;
+package pl.project.trylma.models;
 
 public class PlayerOptions {
   //        1 < bot+real < 7

@@ -1,46 +1,55 @@
 package pl.project.trylma;
 
-import pl.project.trylma.Models.Movement;
-import pl.project.trylma.Models.board.Board;
-import pl.project.trylma.Models.players.IPlayer;
+import pl.project.trylma.models.Movement;
+import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.board.Board;
+import pl.project.trylma.models.board.IBoard;
+import pl.project.trylma.models.players.IPlayer;
 
 import java.util.List;
 
-public class Trylma {
+class Trylma {
   private List<IPlayer> players;
-  private Board board;
+  private IBoard board;
   private int curPlayer;
   private int numPlayers;
 
   Trylma(){
-    //TODO getInstance();
+    board = Board.getInstance();
+    curPlayer=0;
   }
 
   void startGame() {
+    int winner;
+    Movement movement;
     while (true) {
-      //TODO:
-      // - CurPlayer wykonuje ruch i zwraca wykonany,              //currentPlayerMove();
-      //    Jezeli curPlayer opuscil grę
-      //    to zwraca NULL. Tak samo w przypadku
-      //    gdy gracz chce ominac kolejkę.
-      // - sprawdz czy zwrocony ruch jest NULL. Jesli nie to:
-      //          - przechowaj ten ruch,
-      //          - poinformuj graczy o wykonanym,                //sendMoveToPlayer();
-      // - Jezeli ktos wygral                                     //hasWinner();
-      //          - zakoncz gre                                   //end();
-      // - przejdź do kolejnego gracza
+      movement = currentPlayerMove();
+      if (movement!=null){
+        sendMoveToPlayers(movement);
+      }
+      if((winner =hasWinner())!=-1){
+        endGame(players.get(winner).getId());
+        break;
+      }
+      curPlayer++;
+      if(curPlayer>=numPlayers){
+        curPlayer=0;
+      }
     }
   }
 
-  Movement currentPlayerMove(){
-    //TODO: zwraca wynik ruchu playera. Czyli np:
-    // return Player[curPlayer].makeMove();
-    return null;
+  //null - jeśli pomija kolejkę, lub jeśli opuścił grę.
+  private Movement currentPlayerMove(){
+    return players.get(curPlayer).makeMove();
   }
 
-  void sendMoveToPlayers(Movement move) {
-    //TODO: kazdy gracz wysyla informacje do swojego klienta o wykonanym ruchu move;
+  private void sendMoveToPlayers(Movement move) {
+    for (IPlayer player : players) {
+      player.sendMove(move);
+    }
   }
+
+
 
   private int hasWinner(){
     //TODO: sprawdza czy jakis gracz z Player[] wygral.
@@ -50,43 +59,23 @@ public class Trylma {
     return 0;
   }
 
-  void end(int winner) {
-    //TODO: wysilij do klientow informacje o koncu gry;
+  /**
+   * gdy jest remis przekazuje NONE
+   * gdy ktoś wygra przekazuje jego OwnerID
+   * @param winner identyfikator zwyciężcy
+   */
+  private void endGame(Owner winner) {
+    for (IPlayer player : players) {
+      player.endGame(winner);
+    }
   }
 
   void addPlayer(IPlayer player) {
-    //TODO: do tablicy dodaj gracza;
-  }
-
-  public List<IPlayer> getPlayers() {
-    return players;
-  }
-
-  public void setPlayers(List<IPlayer> players) {
-    this.players = players;
-  }
-
-  public Board getBoard() {
-    return board;
-  }
-
-  public void setBoard(Board board) {
-    this.board = board;
-  }
-
-  public int getCurPlayer() {
-    return curPlayer;
-  }
-
-  public void setCurPlayer(int curPlayer) {
-    this.curPlayer = curPlayer;
-  }
-
-  public int getNumPlayers() {
-    return numPlayers;
+    players.add(player);
   }
 
   void setNumPlayers(int numPlayers) {
     this.numPlayers = numPlayers;
   }
+
 }

@@ -1,4 +1,4 @@
-package pl.project.trylma.Models;
+package pl.project.trylma.models;
 
 /**
  * Dodalem kontruktory, potrzebne w Board.

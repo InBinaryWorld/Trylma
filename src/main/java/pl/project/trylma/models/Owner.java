@@ -1,4 +1,4 @@
-package pl.project.trylma.Models;
+package pl.project.trylma.models;
 
 /**
  * Enumy reprezentuja inty, to pomaga mi odnalezc sie na mapie.

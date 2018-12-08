@@ -1,9 +1,9 @@
-package pl.project.trylma.Models.board;
+package pl.project.trylma.models.board;
 
-import pl.project.trylma.Models.Coord;
-import pl.project.trylma.Models.Field;
-import pl.project.trylma.Models.Movement;
-import pl.project.trylma.Models.Owner;
+import pl.project.trylma.models.Coord;
+import pl.project.trylma.models.Field;
+import pl.project.trylma.models.Movement;
+import pl.project.trylma.models.Owner;
 
 import java.util.ArrayList;
 import java.util.List;

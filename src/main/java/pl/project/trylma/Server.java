@@ -1,20 +1,18 @@
 package pl.project.trylma;
 
-import pl.project.trylma.Models.*;
-import pl.project.trylma.Models.board.Board;
-import pl.project.trylma.Models.board.IBoard;
-import pl.project.trylma.Models.players.BotPlayer;
-import pl.project.trylma.Models.players.RealPlayer;
+import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.PlayerOptions;
+import pl.project.trylma.models.players.BotPlayer;
+import pl.project.trylma.models.players.RealPlayer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.List;
 
 public class Server {
-  private static Owner currentOwner;
+  private static Owner currentOwner = Owner.FIRST;
 
-  public static void main(String[] args) throws IOException {
-
+  public static void main(String[] args) {
+    /*
     //zwraca instancje klasy Board
     IBoard board = Board.getInstance();
     //zwraca wierzcholek w zaleznosci od ownera
@@ -29,61 +27,70 @@ public class Server {
     ((Board) board).makeMove(movement);
     //Zwraca mozliwe ruchy dla danego pola Field
     List<Coord> av = board.getAvailableMoves(new Field(new Coord(11, 13), Owner.SECOND));
-    /*
-    ServerSocket listener = new ServerSocket(8901);
-    PlayerOptions playerOptions;
-    currentOwner=Owner.FIRST;
-    RealPlayer player;
-
-    log("Trylma Server is Running");
+    */
+    ServerSocket listener = null;
     try {
-      while (true) {
-        Trylma trylma = new Trylma();
-        player = new RealPlayer(listener.accept(), Owner.FIRST);
-         playerOptions = player.getPlayerOptions();
+      listener = new ServerSocket(8901);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    PlayerOptions playerOptions;
+    currentOwner = Owner.FIRST;
+    RealPlayer player;
+    log("Trylma Server is Running");
+    while (true) {
+      log("Creating new game");
+      Trylma trylma = new Trylma();
+      try {
+        player = new RealPlayer(listener.accept(), currentOwner);
+        playerOptions = player.getPlayerOptions();
         player.sendMessage("Waiting for other players...");
         trylma.addPlayer(player);
         log("Waiting for players...");
-        for (int i=1;i<playerOptions.getReal();i++) {
-          player = new RealPlayer(listener.accept(),getNextOwner());
+        for (int i = 1; i < playerOptions.getReal(); i++) {
+          player = new RealPlayer(listener.accept(), getNextOwner());
           player.sendMessage("Waiting for other players...");
           trylma.addPlayer(player);
         }
         log("Adding bots...");
-        for (int i =0 ; i<playerOptions.getBot();i++)
+        for (int i = 0; i < playerOptions.getBot(); i++)
           trylma.addPlayer(new BotPlayer(getNextOwner()));
         trylma.setNumPlayers(playerOptions.getNumOfPlayers());
         log("Start Game");
         trylma.startGame();
         log("End Game");
-        reset();
+      } catch (IOException e) {
+        log("IOException");
       }
-    } finally {
-      listener.close();
-    }*/
+      reset();
+    }
+
   }
+
 
   //TODO: Reset Board
   private static void reset() {
-    currentOwner= Owner.FIRST;
+    currentOwner = Owner.FIRST;
+
   }
 
-  private static Owner getNextOwner(){
+  public static Owner getNextOwner() {
     switch (currentOwner) {
       case FIRST:
-        currentOwner=Owner.SECOND;
+        currentOwner = Owner.SECOND;
         break;
       case SECOND:
-        currentOwner=Owner.THIRD;
+        currentOwner = Owner.THIRD;
         break;
       case THIRD:
-        currentOwner=Owner.FOURTH;
+        currentOwner = Owner.FOURTH;
         break;
       case FOURTH:
-        currentOwner= Owner.FIVETH;
+        currentOwner = Owner.FIVETH;
         break;
       case FIVETH:
-        currentOwner= Owner.SIXTH;
+        currentOwner = Owner.SIXTH;
         break;
       case SIXTH:
         currentOwner = Owner.FIRST;
@@ -92,7 +99,8 @@ public class Server {
     return currentOwner;
   }
 
-  private static void log(String message){
+  private static void log(String message) {
     System.out.println(message);
   }
+
 }

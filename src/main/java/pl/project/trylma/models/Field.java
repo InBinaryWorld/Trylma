@@ -1,4 +1,4 @@
-package pl.project.trylma.Models;
+package pl.project.trylma.models;
 
 public class Field extends Coord {
   private Owner owner;

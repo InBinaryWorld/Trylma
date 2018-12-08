@@ -1,15 +1,13 @@
-package pl.project.trylma.Models.players;
+package pl.project.trylma.models.players;
 
-import pl.project.trylma.Models.Coord;
-import pl.project.trylma.Models.Move;
-import pl.project.trylma.Models.Owner;
-import pl.project.trylma.Models.PlayerOptions;
-import pl.project.trylma.Models.players.AbstractPlayer;
+import pl.project.trylma.models.Movement;
+import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.PlayerOptions;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 
 public class RealPlayer extends AbstractPlayer {
   Socket socket;
@@ -21,6 +19,7 @@ public class RealPlayer extends AbstractPlayer {
     //  -Ustawia board;
     //  -Ustawia id gracza;
     //  -Ustawia in i out;
+    //  -Przekazuje Owner id do klienta
     super(id);
   }
 
@@ -31,17 +30,33 @@ public class RealPlayer extends AbstractPlayer {
   // -Jezeli poprawny
   //        break;
   // -Po pętli wykonuje ruch;
-  public Move makeMove() {
+  public Movement makeMove() {
     return null;
   }
 
   public void sendMessage(String command) {
     //TODO wysyla do klienta informacje, tzn
+    // out.println("MESSAGE");
     //out.printline(command);
   }
 
+  @Override
+  public void sendMove(Movement movement) {
+
+  }
+
+  @Override
+  public void endGame(Owner winner) {
+
+  }
+
   //TODO: pobrać playerOptions i sprawdzić czy >1 i <7
-  public PlayerOptions getPlayerOptions(){
+  public PlayerOptions getPlayerOptions() throws IOException {
     return null;
+  }
+
+  //TODO;
+  void sendId(Owner id){
+
   }
 }
