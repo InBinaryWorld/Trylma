@@ -1,12 +1,14 @@
-package pl.project.trylma.Models.players;
+package pl.project.trylma.models.players;
 
-import pl.project.trylma.Models.Move;
-import pl.project.trylma.Models.Owner;
-import pl.project.trylma.Models.board.Board;
+import pl.project.trylma.models.Movement;
+import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.board.Board;
+import pl.project.trylma.models.board.IBoard;
 
 public abstract class AbstractPlayer implements IPlayer {
-  private Owner id;               //enum: numer gracza
-  Board board;            //instancja aktualnej mapy;
+  Owner id;
+  IBoard board;
+  boolean isConnected = false;
 
   public Owner getId() {
     return id;
@@ -16,14 +18,18 @@ public abstract class AbstractPlayer implements IPlayer {
     this.id = id;
   }
 
-  AbstractPlayer(Owner id){
-    //TODO: -pobiera instancje mapy z Board;
-    //      -ustawia this.board mapą z getInstance();
-    //      -Wywoluje setId(id);
+  AbstractPlayer(Owner id) {
+    board = Board.getInstance();
+    setId(id);
   }
 
   //TODO: -return (Wywolujemy metode np. boolean board.sprawdzRuchDlaPionka(move.getFrom()))
-  private boolean isMoveCorrect(Move move) {
+  private boolean isMoveCorrect(Movement move) {
     return false;
+  }
+
+  @Override
+  public boolean isConnected() {
+    return isConnected;
   }
 }

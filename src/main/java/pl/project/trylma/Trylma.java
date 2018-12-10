@@ -15,38 +15,40 @@ class Trylma {
   private int curPlayer;
   private int numPlayers;
 
-  Trylma(){
+  Trylma() {
     board = Board.getInstance();
     board.resetBoard();
     players = new ArrayList<>();
-    curPlayer=0;
+    curPlayer = 0;
   }
 
   void startGame() {
     int winner;
     Movement movement;
+    setPlayersOnBoard();
     while (true) {
-      if(numOfConnectedPlayers() < 3){
+      if (numOfConnectedPlayers() < 3) {
         endGame(Owner.NONE);
         break;
       }
       movement = currentPlayerMove();
-      if (movement!=null){
+      if (movement == null) {
         board.makeMove(movement);
         sendMoveToPlayers(movement);
       }
-      if((winner =hasWinner())!=-1){
+      if ((winner = hasWinner()) != -1) {
         endGame(players.get(winner).getId());
         break;
       }
       curPlayer++;
-      if(curPlayer>=numPlayers){
-        curPlayer=0;
+      if (curPlayer >= numPlayers) {
+        curPlayer = 0;
       }
+
     }
   }
 
-  private Movement currentPlayerMove(){
+  private Movement currentPlayerMove() {
     return players.get(curPlayer).makeMove();
   }
 
@@ -57,8 +59,7 @@ class Trylma {
   }
 
 
-
-  private int hasWinner(){
+  private int hasWinner() {
     //TODO: sprawdza czy jakis gracz z Player[] wygral.
     //Jżeli jest zwyciężca to sprawdza którym on jest na liście i go zwróć jego pozycje na niej;
     //NONE=Brak zwyciężcy
@@ -69,12 +70,21 @@ class Trylma {
   /**
    * gdy jest remis przekazuje NONE
    * gdy ktoś wygra przekazuje jego OwnerID
+   *
    * @param winner identyfikator zwyciężcy
    */
   private void endGame(Owner winner) {
     for (IPlayer player : players) {
       player.endGame(winner);
     }
+  }
+
+  private void setPlayersOnBoard(){
+    List<Owner> list = new ArrayList<>();
+    for (IPlayer player : players) {
+      list.add(player.getId());
+    }
+    board.setPlayers(list);
   }
 
   void addPlayer(IPlayer player) {
@@ -85,13 +95,14 @@ class Trylma {
     this.numPlayers = numPlayers;
   }
 
-  private int numOfConnectedPlayers(){
-    int i =0;
+  private int numOfConnectedPlayers() {
+    int count = 0;
     for (IPlayer player : players) {
-      if (player.isConnected())
-        i++;
+      if (player.isConnected()) {
+        count++;
+      }
     }
-    return i;
+    return count;
   }
 
 }

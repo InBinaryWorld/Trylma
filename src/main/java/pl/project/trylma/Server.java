@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 
 public class Server {
   private static Owner currentOwner = Owner.FIRST;
+  private static PlayerOptions playerOptions;
 
   public static void main(String[] args) {
     /*
@@ -36,7 +37,6 @@ public class Server {
       e.printStackTrace();
       System.exit(1);
     }
-    PlayerOptions playerOptions;
     currentOwner = Owner.FIRST;
     RealPlayer player;
     log("Trylma Server is Running");
@@ -83,25 +83,39 @@ public class Server {
   }
 
   private static void nextOwner() {
-    switch (currentOwner) {
-      case FIRST:
-        currentOwner = Owner.SECOND;
-        break;
-      case SECOND:
-        currentOwner = Owner.THIRD;
-        break;
-      case THIRD:
-        currentOwner = Owner.FOURTH;
-        break;
-      case FOURTH:
-        currentOwner = Owner.FIFTH;
-        break;
-      case FIFTH:
-        currentOwner = Owner.SIXTH;
-        break;
-      case SIXTH:
-        currentOwner = Owner.FIRST;
-        break;
+    if (playerOptions.getNumOfPlayers() == 3) {
+      switch (currentOwner) {
+        case FIRST:
+          currentOwner = Owner.THIRD;
+          break;
+        case THIRD:
+          currentOwner = Owner.FIFTH;
+          break;
+        case FIFTH:
+          currentOwner = Owner.FIRST;
+          break;
+      }
+    } else {
+      switch (currentOwner) {
+        case FIRST:
+          currentOwner = Owner.FOURTH;
+          break;
+        case SECOND:
+          currentOwner = Owner.FIFTH;
+          break;
+        case THIRD:
+          currentOwner = Owner.SIXTH;
+          break;
+        case FOURTH:
+          currentOwner = Owner.SECOND;
+          break;
+        case FIFTH:
+          currentOwner = Owner.THIRD;
+          break;
+        case SIXTH:
+          currentOwner = Owner.FIRST;
+          break;
+      }
     }
   }
 
