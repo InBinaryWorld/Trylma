@@ -26,13 +26,14 @@ class Trylma {
     int winner;
     Movement movement;
     setPlayersOnBoard();
+    sendBaseBoardToPlayers();
     while (true) {
-      if (numOfConnectedPlayers() < 3) {
+      if (numOfConnectedPlayers() < 1) {
         endGame(Owner.NONE);
         break;
       }
       movement = currentPlayerMove();
-      if (movement == null) {
+      if (movement != null) {
         board.makeMove(movement);
         sendMoveToPlayers(movement);
       }
@@ -45,6 +46,12 @@ class Trylma {
         curPlayer = 0;
       }
 
+    }
+  }
+
+  private void sendBaseBoardToPlayers() {
+    for (IPlayer player : players) {
+      player.sendBoardTab();
     }
   }
 

@@ -16,5 +16,7 @@ public interface IBoard {
   //new ones:
   void resetBoard();
   boolean isMovementCorrect(Movement movement);
-
+  void setPlayers(List<Owner> list);
+  int[][] getFields();
+  //hasWinner();
 }

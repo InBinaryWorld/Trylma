@@ -15,24 +15,22 @@ public class RealPlayer extends AbstractPlayer {
   public RealPlayer(Socket socket, Owner id) throws DisconnectException {
     super(id);
     isConnected = true;
-    sendId();
+
     try {
+      System.out.println("jestem tu!!!");
       in = new ObjectInputStream(socket.getInputStream());
+      System.out.println("jestem tu!!!");
       out = new ObjectOutputStream(socket.getOutputStream());
+      System.out.println("jestem tu!!!");
     } catch (IOException e) {
       disconnectPlayer();
       throw new DisconnectException();
     }
+
+    sendId();
     this.socket = socket;
   }
 
-  //TODO
-  // -Jeżeli isConnected==false to przyjmi ze pominął ruch
-  // -while (true)
-  // -Wysyla do klienta informacje, ze czeka na ruch;
-  // -Sprawdza czy poprawny, tzn czy znajduje sie na liscie availableMoves;     //isMoveCorrect();
-  // -Jezeli poprawny
-  //        break;
   public Movement makeMove() {
     Object object;
     Movement movement = null;
@@ -45,8 +43,10 @@ public class RealPlayer extends AbstractPlayer {
             movement = (Movement) object;
             if (board.isMovementCorrect(movement))
               break;
-          }else if(object == null)
+          }
+          if (object == null) {
             return null;
+          }
         }
       } catch (IOException | ClassNotFoundException e) {
         disconnectPlayer();
@@ -95,25 +95,36 @@ public class RealPlayer extends AbstractPlayer {
     disconnectPlayer();
   }
 
+
+  @Override
+  public void sendBoardTab() {
+    try {
+      out.writeObject("SET_BASEBOARD");
+      out.writeObject(board.getFields());
+    } catch (IOException ignored) {
+    }
+    disconnectPlayer();
+  }
+
   private void disconnectPlayer() {
     isConnected = false;
     try {
       socket.close();
-    } catch (IOException e) {
-      System.out.println("Player disconnected :" + id.getValue());
+    } catch (IOException ignored) {
     }
+    System.out.println("Player disconnected :" + id.getValue());
   }
 
-  //Rzuca IOException gdy jest problem z komunikacją z klientem
   public PlayerOptions getPlayerOptions() throws DisconnectException {
-    PlayerOptions plOp = null;
+    Object object = null;
+    int numb;
     try {
       while (true) {
         out.writeObject("SET_SERVER_OPTIONS");
-        Object object = in.readObject();
+        object = in.readObject();
         if (object instanceof PlayerOptions) {
-          plOp = (PlayerOptions) object;
-          if (plOp.getNumOfPlayers() < 7 && plOp.getNumOfPlayers() > 1)
+          numb = ((PlayerOptions) object).getNumOfPlayers();
+          if (numb < 7 && numb > 1 && numb!=5)
             break;
         } else {
           throw new IOException();
@@ -123,7 +134,7 @@ public class RealPlayer extends AbstractPlayer {
       disconnectPlayer();
       throw new DisconnectException();
     }
-    return plOp;
+    return (PlayerOptions)object;
   }
 
   private void sendId() throws DisconnectException {

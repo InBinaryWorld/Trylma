@@ -1,8 +1,5 @@
 package pl.project.trylma.models;
 
-/**
- * Dodalem kontruktory, potrzebne w Board.
- */
 public class Coord {
   private int x;
   private int y;

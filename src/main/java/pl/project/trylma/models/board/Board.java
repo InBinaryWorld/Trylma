@@ -281,6 +281,16 @@ public final class Board implements IBoard {
     return false;
   }
 
+  @Override
+  public void setPlayers(List<Owner> list) {
+
+  }
+
+  @Override
+  public int[][] getFields() {
+    return fields;
+  }
+
   public void setField(int x, int y, int var) {
     fields[y][x] = var;
   }

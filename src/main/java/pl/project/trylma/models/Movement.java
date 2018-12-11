@@ -1,9 +1,5 @@
 package pl.project.trylma.models;
 
-/**
- * Dodalem pare metod potrzebnych w board.
- * Zmienilem nazwe z Move na Movement.
- */
 public class Movement {
   private Field from;
   private Coord to;

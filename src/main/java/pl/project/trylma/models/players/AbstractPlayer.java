@@ -18,8 +18,8 @@ public abstract class AbstractPlayer implements IPlayer {
     this.id = id;
   }
 
-  AbstractPlayer(Owner id){
-    board=Board.getInstance();
+  AbstractPlayer(Owner id) {
+    board = Board.getInstance();
     setId(id);
   }
 

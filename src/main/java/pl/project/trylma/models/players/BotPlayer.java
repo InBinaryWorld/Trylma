@@ -61,4 +61,9 @@ public class BotPlayer extends AbstractPlayer {
   public void endGame(Owner winner) {
 
   }
+
+  @Override
+  public void sendBoardTab() {
+
+  }
 }
