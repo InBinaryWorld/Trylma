@@ -99,8 +99,8 @@ public class RealPlayer extends AbstractPlayer {
       out.writeObject("SET_BASEBOARD");
       out.writeObject(board.getFields());
     } catch (IOException ignored) {
+      disconnectPlayer();
     }
-    disconnectPlayer();
   }
 
   private void disconnectPlayer() {
@@ -118,9 +118,7 @@ public class RealPlayer extends AbstractPlayer {
     try {
       while (true) {
         out.writeObject("SET_SERVER_OPTIONS");
-        System.out.println("jestem tu!!!");
         object = in.readObject();
-        System.out.println("jestem tu!!!");
         if (object instanceof PlayerOptions) {
           numb = ((PlayerOptions) object).getNumOfPlayers();
           if (numb < 7 && numb > 1 && numb!=5)

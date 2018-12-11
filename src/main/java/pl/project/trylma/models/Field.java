@@ -2,7 +2,8 @@ package pl.project.trylma.models;
 
 import java.io.Serializable;
 
-public class Field extends Coord{
+public class Field extends Coord implements Serializable{
+  static final long serialVersionUID = 5588980448693010399L;
   private Owner owner;
 
   public Owner getOwner() {

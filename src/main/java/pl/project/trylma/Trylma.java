@@ -28,6 +28,7 @@ class Trylma {
     setPlayersOnBoard();
     sendBaseBoardToPlayers();
     while (true) {
+
       if (numOfConnectedPlayers() < 1) {
         endGame(Owner.NONE);
         break;
