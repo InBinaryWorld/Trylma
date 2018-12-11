@@ -1,5 +1,7 @@
 package pl.project.trylma.models;
 
+import java.io.Serializable;
+
 public class Coord {
   private int x;
   private int y;

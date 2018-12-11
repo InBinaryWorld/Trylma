@@ -1,6 +1,8 @@
 package pl.project.trylma.models;
 
-public class Field extends Coord {
+import java.io.Serializable;
+
+public class Field extends Coord{
   private Owner owner;
 
   public Owner getOwner() {

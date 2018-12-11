@@ -1,6 +1,9 @@
 package pl.project.trylma.models;
 
-public class Movement {
+import java.io.Serializable;
+
+public class Movement implements Serializable {
+  static final long serialVersionUID = 1588980448693010399L;
   private Field from;
   private Coord to;
 

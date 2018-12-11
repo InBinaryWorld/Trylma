@@ -1,5 +1,7 @@
 package pl.project.trylma.models;
 
+import java.io.Serializable;
+
 public enum Owner {
   NONE(7),
   FIRST(1),

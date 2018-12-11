@@ -14,21 +14,18 @@ public class RealPlayer extends AbstractPlayer {
 
   public RealPlayer(Socket socket, Owner id) throws DisconnectException {
     super(id);
+    this.socket = socket;
     isConnected = true;
-
     try {
-      System.out.println("jestem tu!!!");
-      in = new ObjectInputStream(socket.getInputStream());
-      System.out.println("jestem tu!!!");
       out = new ObjectOutputStream(socket.getOutputStream());
-      System.out.println("jestem tu!!!");
+      out.flush();
+      in = new ObjectInputStream(socket.getInputStream());
+
     } catch (IOException e) {
       disconnectPlayer();
       throw new DisconnectException();
     }
-
     sendId();
-    this.socket = socket;
   }
 
   public Movement makeMove() {
@@ -121,7 +118,9 @@ public class RealPlayer extends AbstractPlayer {
     try {
       while (true) {
         out.writeObject("SET_SERVER_OPTIONS");
+        System.out.println("jestem tu!!!");
         object = in.readObject();
+        System.out.println("jestem tu!!!");
         if (object instanceof PlayerOptions) {
           numb = ((PlayerOptions) object).getNumOfPlayers();
           if (numb < 7 && numb > 1 && numb!=5)
@@ -131,7 +130,9 @@ public class RealPlayer extends AbstractPlayer {
         }
       }
     } catch (IOException | ClassNotFoundException e) {
+      e.printStackTrace();
       disconnectPlayer();
+
       throw new DisconnectException();
     }
     return (PlayerOptions)object;
