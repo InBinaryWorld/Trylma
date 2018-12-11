@@ -9,6 +9,8 @@ import pl.project.trylma.models.players.IPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 class Trylma {
   private List<IPlayer> players;
   private IBoard board;
@@ -51,6 +53,8 @@ class Trylma {
   }
 
   private void sendBaseBoardToPlayers() {
+
+
     for (IPlayer player : players) {
       player.sendBoardTab();
     }

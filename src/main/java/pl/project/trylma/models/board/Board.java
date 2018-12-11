@@ -278,7 +278,7 @@ public final class Board implements IBoard {
 
   @Override
   public boolean isMovementCorrect(Movement movement) {
-    return false;
+    return true;
   }
 
   @Override

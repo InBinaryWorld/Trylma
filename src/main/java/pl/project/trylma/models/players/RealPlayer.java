@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import static java.lang.Thread.sleep;
+
 public class RealPlayer extends AbstractPlayer {
   private Socket socket;
   private ObjectInputStream in;
@@ -32,6 +34,7 @@ public class RealPlayer extends AbstractPlayer {
     Object object;
     Movement movement = null;
     if (isConnected) {
+      sendMessage("Twój ruch");
       try {
         while (true) {
           out.writeObject("YOUR_MOVE");
@@ -49,6 +52,7 @@ public class RealPlayer extends AbstractPlayer {
         disconnectPlayer();
         return null;
       }
+      sendMessage("Czekaj na swój ruch...");
       return movement;
     } else {
       return null;
@@ -95,6 +99,7 @@ public class RealPlayer extends AbstractPlayer {
 
   @Override
   public void sendBoardTab() {
+
     try {
       out.writeObject("SET_BASEBOARD");
       out.writeObject(board.getFields());
