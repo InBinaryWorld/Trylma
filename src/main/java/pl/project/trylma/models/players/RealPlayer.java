@@ -72,6 +72,7 @@ public class RealPlayer extends AbstractPlayer {
 
   @Override
   public void sendMove(Movement movement) {
+    System.out.println(id+"Real move!");
     if (isConnected) {
       try {
         out.writeObject("DO_MOVE");

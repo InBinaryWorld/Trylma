@@ -45,7 +45,10 @@ class Trylma {
 //      }
 //      Zamienilem na:
       if ((winner = hasWinner()) != 0) {
-        endGame(players.get(winner - 1).getId());
+        for(IPlayer player: players){
+          if(player.getId().getValue()==winner)
+            endGame(player.getId());
+        }
         break;
       }
       curPlayer++;

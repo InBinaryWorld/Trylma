@@ -7,6 +7,8 @@ import pl.project.trylma.models.Owner;
 
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class BotPlayer extends AbstractPlayer {
   private Coord destination;
 
@@ -16,13 +18,18 @@ public class BotPlayer extends AbstractPlayer {
   }
 
   public Movement makeMove() {
-    System.out.println("Bot move!");
-    List<Coord> pawnList = board.getFinalCoordsFor(id);
+   try {
+      sleep(1500);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    System.out.println(id +" Bot move!");
+    List<Coord> pawnList = board.getOwnersPawns(id);
     List<Coord> availableMoves;
     Coord from = null;
     Coord to = null;
     double delta;
-    double maxDelta = Double.MIN_VALUE;
+    double maxDelta = Double.NEGATIVE_INFINITY;
     double pawnDistance;
     double moveDistance;
 
@@ -39,11 +46,8 @@ public class BotPlayer extends AbstractPlayer {
         }
       }
     }
-    //System.out.println("Bot move!"+from.getX()+","+from.getY()+" to "+to.getX()+","+to.getY()+ "OWner "+getId());
-    System.out.println("Bot move=decided");
     if (from != null)
       return new Movement(from, to, id);
-    System.out.println("Bot move =null");
     return null;
   }
 
