@@ -17,6 +17,7 @@ class Trylma {
   private int curPlayer;
   private int numPlayers;
 
+
   Trylma() {
     board = Board.getInstance();
     board.resetBoard();
@@ -40,7 +41,12 @@ class Trylma {
         board.makeMove(movement);
         sendMoveToPlayers(movement);
       }
-      if ((winner = hasWinner()) != -1) {
+//      if ((winner = hasWinner()) != -1) {
+//        endGame(players.get(winner).getId());
+//        break;
+//      }
+//      Zamienilem na:
+            if ((winner = hasWinner()) != 0) {
         endGame(players.get(winner).getId());
         break;
       }
@@ -72,11 +78,7 @@ class Trylma {
 
 
   private int hasWinner() {
-    //TODO: sprawdza czy jakis gracz z Player[] wygral.
-    //Jżeli jest zwyciężca to sprawdza którym on jest na liście i go zwróć jego pozycje na niej;
-    //NONE=Brak zwyciężcy
-    //  - zwroc -1;
-    return 0;
+    return board.hasWinner();
   }
 
   /**

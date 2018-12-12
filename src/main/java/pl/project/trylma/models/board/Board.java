@@ -25,7 +25,7 @@ import java.util.List;
 public final class Board implements IBoard {
   public static Board instance;
   private int [][] fields;
-
+  private List<Owner> list;
   private ArrayList<ArrayList<Coord>> finalCoordsFor;
 
   /**
@@ -109,8 +109,12 @@ public final class Board implements IBoard {
     List<Coord> result = new ArrayList<Coord>();
     for (int i = field.getY() - 1; i < field.getY() + 2; i++) {
       for (int j = field.getX() - 2; j < field.getX() + 3; j++) {
-        if (fields[i][j] != 0 && !(i == field.getY() && j == field.getX())) {
-          result.add(new Coord(j, i));
+        try {
+          if (fields[i][j] != 0 && !(i == field.getY() && j == field.getX())) {
+            result.add(new Coord(j, i));
+          }
+        } catch (ArrayIndexOutOfBoundsException e) {
+          continue;
         }
       }
     }
@@ -121,23 +125,29 @@ public final class Board implements IBoard {
     Coord coordsUnderTest = new Coord(coords.getX() + x, coords.getY() + y);
     List<Coord> result = new ArrayList<Coord>();
     if (lookFor == true) {//szukaj wolnych
-      if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] == 7) {
-        result.add(coordsUnderTest);
-        List<Coord> temp = onLine(coordsUnderTest, x, y, false);
-        if (temp != null) {
-          result.addAll(temp);
+      try {
+        if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] == 7) {
+          result.add(coordsUnderTest);
+          List<Coord> temp = onLine(coordsUnderTest, x, y, false);
+          if (temp != null) {
+            result.addAll(temp);
+          }
+        } else {
+          return null;
         }
-      } else {
+      } catch (ArrayIndexOutOfBoundsException e) {
         return null;
       }
     } else { //szukaj zajetych
-      if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 7 &&
-              this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 0) {
-        List<Coord> temp = onLine(coordsUnderTest, x, y, true);
-        if (temp != null) {
-          result.addAll(temp);
+      try {
+        if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 7 &&
+                this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 0) {
+          List<Coord> temp = onLine(coordsUnderTest, x, y, true);
+          if (temp != null) {
+            result.addAll(temp);
+          }
         }
-      }
+      } catch (ArrayIndexOutOfBoundsException e) {}
     }
     return result;
   }
@@ -273,17 +283,64 @@ public final class Board implements IBoard {
 
   @Override
   public void resetBoard() {
-
+    instance = new Board();
   }
+
 
   @Override
   public boolean isMovementCorrect(Movement movement) {
-    return true;
+    Field testedField = movement.getFrom();
+    Coord to = movement.getTo();
+    List<Coord> list = getAvailableMoves(testedField);
+    for (Coord coord : list) {
+      if (coord.getX() == to.getX() && coord.getY() == to.getY()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
   public void setPlayers(List<Owner> list) {
+    this.list = list;
+    List<Owner> ownerList = new ArrayList<>();
+    ownerList.add(Owner.FIRST);
+    ownerList.add(Owner.SECOND);
+    ownerList.add(Owner.THIRD);
+    ownerList.add(Owner.FOURTH);
+    ownerList.add(Owner.FIFTH);
+    ownerList.add(Owner.SIXTH);
 
+    for (int i = 0; i < 6; i++) {
+      if (!list.contains(ownerList.get(i))) {
+        for (int j = 0; j < 17; j++) {
+          for (int k = 0; k < 26; k++) {
+            if (fields[j][k] == ownerList.get(i).getValue()) {
+              fields[j][k] = Owner.NONE.getValue();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @Override
+  public int hasWinner() {
+    List<Coord> tempCoords = new ArrayList<>();
+    for (Owner owner : list) {
+      for (int i = 0; i < 17; i++) {
+        for (int j = 0; j < 26; j++) {
+          if (fields[i][j] == owner.getValue()) {
+            tempCoords.addAll(getAvailableMoves(new Field(new Coord(j, i), owner)));
+          }
+        }
+      }
+      if (tempCoords.size() == 0) {
+        return owner.getValue();
+      }
+      tempCoords.clear();
+    }
+    return 0;
   }
 
   @Override

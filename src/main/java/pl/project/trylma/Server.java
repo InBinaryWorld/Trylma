@@ -14,22 +14,6 @@ public class Server {
   private static PlayerOptions playerOptions;
 
   public static void main(String[] args) {
-    /*
-    //zwraca instancje klasy Board
-    IBoard board = Board.getInstance();
-    //zwraca wierzcholek w zaleznosci od ownera
-    ((Board) board).getFinalCoordsFor(Owner.SECOND);
-    //drukuje mape z indeksami jakbys potrzebowal
-    ((Board) board).printAr();
-    //tworze obiekt movement, zeby wykonac instrukcje makeMove na mapie
-    Movement movement = new Movement(new Coord(12, 0),
-                                     new Coord(11, 13),
-                                     Owner.SECOND);
-    //Wykonuje ruch
-    ((Board) board).makeMove(movement);
-    //Zwraca mozliwe ruchy dla danego pola Field
-    List<Coord> av = board.getAvailableMoves(new Field(new Coord(11, 13), Owner.SECOND));
-    */
     ServerSocket listener = null;
     try {
       listener = new ServerSocket(9001);

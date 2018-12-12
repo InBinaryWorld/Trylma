@@ -96,7 +96,6 @@ public class RealPlayer extends AbstractPlayer {
     disconnectPlayer();
   }
 
-
   @Override
   public void sendBoardTab() {
 
