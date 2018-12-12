@@ -19,4 +19,6 @@ public interface IBoard {
   void setPlayers(List<Owner> list);
   int[][] getFields();
   int hasWinner();
+  //Dodana teraz:
+  List<Coord> getOwnersPawns(Owner owner);
 }

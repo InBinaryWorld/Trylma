@@ -344,6 +344,19 @@ public final class Board implements IBoard {
   }
 
   @Override
+  public List<Coord> getOwnersPawns(Owner owner) {
+    List<Coord> result = new ArrayList<>();
+    for (int i = 0; i < 17; i++) {
+      for (int j = 0; j < 26; j++) {
+        if (fields[i][j] == owner.getValue()) {
+          result.add(new Coord(j, i));
+        }
+      }
+    }
+    return result;
+  }
+
+  @Override
   public int[][] getFields() {
     return fields;
   }
