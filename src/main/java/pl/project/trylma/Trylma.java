@@ -17,8 +17,8 @@ class Trylma {
 
 
   Trylma() {
+    Board.resetBoard();
     board = Board.getInstance();
-    board.resetBoard();
     players = new ArrayList<>();
     curPlayer = 0;
   }

@@ -14,7 +14,7 @@ public interface IBoard {
   Coord getOppositeTop(Owner owner);
   void makeMove(Movement movement);
   //new ones:
-  void resetBoard();
+  static void resetBoard(){}
   boolean isMovementCorrect(Movement movement);
   void setPlayers(List<Owner> list);
   int[][] getFields();

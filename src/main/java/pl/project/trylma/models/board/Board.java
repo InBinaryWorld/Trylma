@@ -281,8 +281,8 @@ public final class Board implements IBoard {
     setField(movement.getTo().getX(), movement.getTo().getY(), movement.getOwner().getValue());
   }
 
-  @Override
-  public void resetBoard() {
+
+  public static void resetBoard() {
     instance = new Board();
   }
 
