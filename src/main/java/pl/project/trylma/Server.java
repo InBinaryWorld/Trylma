@@ -70,34 +70,34 @@ public class Server {
     if (playerOptions.getNumOfPlayers() == 3) {
       switch (currentOwner) {
         case FIRST:
-          currentOwner = Owner.THIRD;
+          currentOwner = Owner.FIFTH;
           break;
         case THIRD:
           currentOwner = Owner.FIFTH;
           break;
         case FIFTH:
-          currentOwner = Owner.FIRST;
+          currentOwner = Owner.THIRD;
           break;
       }
     } else {
       switch (currentOwner) {
         case FIRST:
-          currentOwner = Owner.FOURTH;
+          currentOwner = Owner.SIXTH;
           break;
         case SECOND:
           currentOwner = Owner.FIFTH;
           break;
         case THIRD:
-          currentOwner = Owner.SIXTH;
+          currentOwner = Owner.FOURTH;
           break;
         case FOURTH:
-          currentOwner = Owner.SECOND;
+          currentOwner = Owner.FIRST;
           break;
         case FIFTH:
           currentOwner = Owner.THIRD;
           break;
         case SIXTH:
-          currentOwner = Owner.FIRST;
+          currentOwner = Owner.SECOND;
           break;
       }
     }

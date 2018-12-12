@@ -16,6 +16,7 @@ public class BotPlayer extends AbstractPlayer {
   }
 
   public Movement makeMove() {
+    System.out.println("Bot move!");
     List<Coord> pawnList = board.getFinalCoordsFor(id);
     List<Coord> availableMoves;
     Coord from = null;
@@ -38,8 +39,10 @@ public class BotPlayer extends AbstractPlayer {
         }
       }
     }
+    //System.out.println("Bot move!"+from.getX()+","+from.getY()+" to "+to.getX()+","+to.getY()+ "OWner "+getId());
     if (from != null)
       return new Movement(from, to, id);
+    System.out.println("Bot move =null");
     return null;
   }
 

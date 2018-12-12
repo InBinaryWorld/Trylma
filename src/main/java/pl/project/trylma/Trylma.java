@@ -9,8 +9,6 @@ import pl.project.trylma.models.players.IPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
-
 class Trylma {
   private List<IPlayer> players;
   private IBoard board;
@@ -46,8 +44,8 @@ class Trylma {
 //        break;
 //      }
 //      Zamienilem na:
-            if ((winner = hasWinner()) != 0) {
-        endGame(players.get(winner).getId());
+      if ((winner = hasWinner()) != 0) {
+        endGame(players.get(winner - 1).getId());
         break;
       }
       curPlayer++;
@@ -93,7 +91,7 @@ class Trylma {
     }
   }
 
-  private void setPlayersOnBoard(){
+  private void setPlayersOnBoard() {
     List<Owner> list = new ArrayList<>();
     for (IPlayer player : players) {
       list.add(player.getId());

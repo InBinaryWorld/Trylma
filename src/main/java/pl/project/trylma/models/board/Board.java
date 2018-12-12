@@ -263,9 +263,9 @@ public final class Board implements IBoard {
       case 1 : return new Coord(24, 12);
       case 2 : return new Coord(12, 16);
       case 3 : return new Coord(0, 12);
-      case 4 : return new Coord(24, 4);
+      case 4 : return new Coord(0, 4);
       case 5 : return new Coord(12, 0);
-      case 6 : return new Coord(0, 4);
+      case 6 : return new Coord(24, 4);
     }
     return null;
   }
