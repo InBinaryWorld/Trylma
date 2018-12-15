@@ -2,6 +2,10 @@ package pl.project.trylma.models;
 
 import java.io.Serializable;
 
+/**
+ * Representation of two integers,
+ * which describes postion on map.
+ */
 public class Coord implements Serializable {
   static final long serialVersionUID = 8588980448693010399L;
   private int x;

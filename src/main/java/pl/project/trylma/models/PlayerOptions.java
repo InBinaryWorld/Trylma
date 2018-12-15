@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class PlayerOptions implements Serializable {
   static final long serialVersionUID = 2588980448693010399L;
-  //        1 < bot+real < 7
+
   private int bot;
   private int real;
 

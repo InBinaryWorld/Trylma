@@ -4,107 +4,67 @@ import pl.project.trylma.models.Coord;
 import pl.project.trylma.models.Field;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.board.builder.BaseBoardBuilder;
+import pl.project.trylma.models.board.builder.BoardBuildDirector;
+import pl.project.trylma.models.board.builder.BoardBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Plansza powinna dobrze sprawdzac mozliwe ruchy,
- * rowniez te, ktore wymagaja przeskoczenia.
- * Jezeli dany pionek znajduje sie w swoim docelowym
- * ramieniu gwiazdy to nie powinien z niego juz wychodzic,
- * co jest zaimplementowane w funkcji getAvailable.
- *
- * Moze sie wyjebac cos, jak bedziesz sprawdzal mozliwe ruchy
- * dla pionkow, ktore sa na granicy tablicy (wierzcholki ramion)
- * Nie zaimplementowalem sprawdzania, czy nie wychodzi poza tablice. JESZCZE!
- *
- * Powinienem dodac jeszcze metode hasWinner(), wydaje mi sie ze to powinno
- * byc zaimplementowane w tej klasie.
- */
 public final class Board implements IBoard {
   public static Board instance;
+  /**Board representation as two dim int map*/
   private int [][] fields;
+  /**List of players in current game*/
   private List<Owner> list;
-  private ArrayList<ArrayList<Coord>> finalCoordsFor;
+  /**set of coords every player want get*/
+  private ArrayList<ArrayList<Coord>> finalCoords;
 
-  /**
-   * Metody prywatne to szczegoly implementacji tworzenia planszy,
-   * nie trzeba ich analizowac.
-   */
-  private void drawMap() {
-    setTriangleShape(12, 0, -13);
-    setTriangleShape(12, 16, 13);
-  }
-
-  private void setPawnsOnBoard(final int y, final int x) {
-    findAndReplace(2, Owner.NONE.getValue(), 0, 26, 0, 17);
-    findAndReplace(1, Owner.SECOND.getValue(), 8, 17, 0, 8);
-    findAndReplace(1, Owner.THIRD.getValue(), 17, 26, 0, 8);
-    findAndReplace(1, Owner.FOURTH.getValue(), 0, 7, 8, 17);
-    findAndReplace(1, Owner.FIFTH.getValue(), 8, 17, 8, 17);
-    findAndReplace(1, Owner.SIXTH.getValue(), 17, 26, 8, 17);
-  }
-
-  private void findAndReplace(int valToReplace, int replacement,
-                              int xBeg, int xEnd, int yBeg, int yEnd) {
-    for (int i = yBeg; i < yEnd; i++) {
-      for (int j = xBeg; j < xEnd; j++) {
-        if (this.fields[i][j] == valToReplace) {
-          this.fields[i][j] = replacement;
-        }
-      }
-    }
-  }
 
   private Board() {
     createBoard();
   }
 
-  public List<Coord> getFinalCoordsFor(Owner owner) {
-    return finalCoordsFor.get(owner.getValue());
+
+  private void createBoard() {
+    final BoardBuilder builder = new BaseBoardBuilder();
+    final BoardBuildDirector director = new BoardBuildDirector(builder);
+    this.fields = ((int [][]) director.construct());
+    setFinalCoords();
   }
 
-  private void setTriangleShape(int x, int y, int levels) {
-    if (levels < 0) {
-      levels = Math.abs(levels);
-      int leftBound = x;
-      int rightBound = x;
-      int arrWidth = this.fields[0].length;
-      for (int i = y; i < levels; i++) {
-        for (int j = 0; j < arrWidth; j++) {
-          if (j == leftBound) {
-            int k = j;
-            for (k = j; k <= rightBound; k = k + 2) {
-              this.fields[i][k] = this.fields[i][k] + 1;
-            }
-            j = k;
-          }
+  /**sets values for finalCoord attribute*/
+  private void setFinalCoords() {
+    finalCoords = new ArrayList<ArrayList<Coord>>();
+    for (int i = 0; i < 7; i++) {
+      finalCoords.add(new ArrayList<Coord>());
+    }
+    for (int i = 0; i < 17; i++) {
+      for (int j = 0; j < 26; j++) {
+        switch (fields[i][j]) {
+          case 1  : finalCoords.get(6).add(new Coord(j, i));
+            break;
+          case 2  : finalCoords.get(5).add(new Coord(j, i));
+            break;
+          case 3  : finalCoords.get(4).add(new Coord(j, i));
+            break;
+          case 4  : finalCoords.get(3).add(new Coord(j, i));
+            break;
+          case 5  : finalCoords.get(2).add(new Coord(j, i));
+            break;
+          case 6  : finalCoords.get(1).add(new Coord(j, i));
+            break;
         }
-        leftBound = leftBound - 1;
-        rightBound = rightBound + 1;
-      }
-    } else {
-      int leftBound = x;
-      int rightBound = x;
-      int arrWidth = this.fields[0].length;
-      for (int i = levels; i > 0; i--) {
-        for (int j = 0; j < arrWidth; j++) {
-          if (j == leftBound) {
-            int k = j;
-            for (k = j; k <= rightBound; k = k + 2) {
-              this.fields[y][k] = this.fields[y][k] + 1;
-            }
-            j = k;
-          }
-        }
-        leftBound = leftBound - 1;
-        rightBound = rightBound + 1;
-        y--;
       }
     }
   }
 
+  /**
+   * Returns list of six coords, which are
+   * closest neighbourhood for specified field.
+   * @param field - pawn for searching neighbourhood
+   * @return - list of coords
+   */
   private List<Coord> getNbhd(Field field) {
     List<Coord> result = new ArrayList<Coord>();
     for (int i = field.getY() - 1; i < field.getY() + 2; i++) {
@@ -121,6 +81,17 @@ public final class Board implements IBoard {
     return result;
   }
 
+  /**
+   * Finds all available fields to go to
+   * skipping occupied fields.
+   * The direction is designated by vector.
+   * @param coords - entry point of finding available fields
+   * @param x - vertical of vector
+   * @param y - horizontal of vector
+   * @param lookFor - used for specify which field (occupied/free)
+   *                now it should look for (reccursion).
+   * @return - list of available coords to jump to
+   */
   private List<Coord> onLine(Coord coords, int x, int y, boolean lookFor) {
     Coord coordsUnderTest = new Coord(coords.getX() + x, coords.getY() + y);
     List<Coord> result = new ArrayList<Coord>();
@@ -152,40 +123,21 @@ public final class Board implements IBoard {
     return result;
   }
 
-  private void setFinalCoords() {
-    finalCoordsFor = new ArrayList<ArrayList<Coord>>();
-    for (int i = 0; i < 7; i++) {
-      finalCoordsFor.add(new ArrayList<Coord>());
-    }
-    for (int i = 0; i < 17; i++) {
-      for (int j = 0; j < 26; j++) {
-        switch (fields[i][j]) {
-          case 1  : finalCoordsFor.get(6).add(new Coord(j, i));
-                    break;
-          case 2  : finalCoordsFor.get(5).add(new Coord(j, i));
-                    break;
-          case 3  : finalCoordsFor.get(4).add(new Coord(j, i));
-                    break;
-          case 4  : finalCoordsFor.get(3).add(new Coord(j, i));
-                    break;
-          case 5  : finalCoordsFor.get(2).add(new Coord(j, i));
-                    break;
-          case 6  : finalCoordsFor.get(1).add(new Coord(j, i));
-                    break;
-        }
-      }
-    }
-  }
-
+  /**
+   * sets specified coord as free
+   * @param coord - coord to release
+   */
   private void releaseField(Coord coord) {
     setField(coord.getX(), coord.getY(), Owner.NONE.getValue());
   }
 
   /**
-   * Zwraca dostepne pola dla danego pionka.
-   * @param field   - koordy dla ktorych szukamy mozliwego ruchu
-   * @return        - Lista mozliwych posuniec
+   * Returns available coords for pawn specified by field
+   * to go to
+   * @param field - pawn
+   * @return - available moves
    */
+  @Override
   public List<Coord> getAvailableMoves(Field field) {
     List<Coord> friends = getNbhd(field);
     ArrayList<Coord> result = new ArrayList<Coord>();
@@ -203,13 +155,15 @@ public final class Board implements IBoard {
       }
     }
     for (int i = 1; i < 7; i++) {
-      if (field.getOwner().getValue() == i && contain(finalCoordsFor.get(i), field)) {
-        result = commonPart(finalCoordsFor.get(i), result);
+      if (field.getOwner().getValue() == i && contain(finalCoords.get(i), field)) {
+        result = commonPart(finalCoords.get(i), result);
       }
     }
     return result;
   }
 
+
+  /**Makes part of job in searching availables moves*/
   private ArrayList<Coord> commonPart(ArrayList<Coord> b, ArrayList<Coord> a) {
     ArrayList<Coord> common = new ArrayList<Coord>();
     for (Coord c1 : b) {
@@ -223,15 +177,7 @@ public final class Board implements IBoard {
     return common;
   }
 
-  public void createBoard() {
-    final int yDim = 17;
-    final int xDim = 26;
-    this.fields = new int[yDim][xDim];
-    this.drawMap();
-    this.setPawnsOnBoard(yDim, xDim);
-    setFinalCoords();
-  }
-
+  /**Makes part of job in searching available moves*/
   private boolean contain(final ArrayList<Coord> ar, final Coord coord) {
     for (Coord crd : ar) {
       if (crd.getX() == coord.getX() &&
@@ -242,6 +188,7 @@ public final class Board implements IBoard {
     return false;
   }
 
+
   public static Board getInstance() {
     if (instance == null) {
       instance = new Board();
@@ -249,14 +196,11 @@ public final class Board implements IBoard {
     return instance;
   }
 
+
   /**
-   * Zwraca przeciwlegly wierzcholek
-   * na podstawie przyjetych koordynat
-   * @param owner - dla kogo szukac wierzcholka
-   * @return      - zwraca wierzcholek.
-   *
-   * Wywolana dla nieprawidlowego argumentu
-   * zwraca obiekt NULL;
+   * Returns opposite top of star-shape mape
+   * @param owner - for which player return the top
+   * @return      - returns top coords. If bad arg returns null
    */
   public Coord getOppositeTop(Owner owner) {
     switch (owner.getValue()) {
@@ -271,10 +215,8 @@ public final class Board implements IBoard {
   }
 
   /**
-   *
-   * @param movement - obiekt typu Movement.
-   * Zmienilem nazwe klasy na rzeczownik od slowa Move xD,
-   * wszystko jest tak jak ustalilismy.
+   * Makes move on map by releasing field and occuping other
+   * @param movement - information about move
    */
   public void makeMove(Movement movement) {
     releaseField(movement.getFrom());
@@ -286,7 +228,11 @@ public final class Board implements IBoard {
     instance = new Board();
   }
 
-
+  /**
+   * Checks whether the movement follows the game rules
+   * @param movement - information about move
+   * @return - boolean value (true if correct)
+   */
   @Override
   public boolean isMovementCorrect(Movement movement) {
     Field testedField = movement.getFrom();
@@ -300,6 +246,10 @@ public final class Board implements IBoard {
     return false;
   }
 
+  /**
+   * Sets players on board following game rules
+   * @param list - list of player
+   */
   @Override
   public void setPlayers(List<Owner> list) {
     this.list = list;
@@ -310,7 +260,6 @@ public final class Board implements IBoard {
     ownerList.add(Owner.FOURTH);
     ownerList.add(Owner.FIFTH);
     ownerList.add(Owner.SIXTH);
-
     for (int i = 0; i < 6; i++) {
       if (!list.contains(ownerList.get(i))) {
         for (int j = 0; j < 17; j++) {
@@ -324,25 +273,37 @@ public final class Board implements IBoard {
     }
   }
 
+  /**
+   * Check if game has Winner
+   * @return value assignated for player
+   * or 0 if there is no winner
+   */
   @Override
   public int hasWinner() {
-    List<Coord> tempCoords = new ArrayList<>();
+    final int numOfPawns = 10;
+    int checker = 0;
     for (Owner owner : list) {
-      for (int i = 0; i < 17; i++) {
-        for (int j = 0; j < 26; j++) {
-          if (fields[i][j] == owner.getValue()) {
-            tempCoords.addAll(getAvailableMoves(new Field(new Coord(j, i), owner)));
+      List<Coord> pawns = getOwnersPawns(owner);
+      for (Coord finalCoord : finalCoords.get(owner.getValue())) {
+        for (Coord actualCoord : pawns) {
+          if (actualCoord.getX() == finalCoord.getX() &&
+                  actualCoord.getY() == finalCoord.getY()) {
+            checker++;
           }
         }
       }
-      if (tempCoords.size() == 0) {
+      if (checker == numOfPawns) {
         return owner.getValue();
       }
-      tempCoords.clear();
+      checker = 0;
     }
     return 0;
   }
 
+  /**
+   * @param owner - player
+   * @return - list of coords occupied by owner.
+   */
   @Override
   public List<Coord> getOwnersPawns(Owner owner) {
     List<Coord> result = new ArrayList<>();
@@ -356,17 +317,33 @@ public final class Board implements IBoard {
     return result;
   }
 
+  /**
+   * gives two dimensional, integer, board representaton
+   * of current game
+   * @return two dimensional array associated with game
+   */
   @Override
   public int[][] getFields() {
     return fields;
   }
 
-  public void setField(int x, int y, int var) {
+  /**
+   * puts value on specified position on board,
+   * mainly for debugging
+   */
+  void setField(int x, int y, int var) {
     fields[y][x] = var;
   }
 
   /**
-   * DEBUGGING
+   * returns value of specified field by coord
+   */
+  int getField(Coord coord) {
+    return fields[coord.getY()][coord.getX()];
+  }
+
+  /**
+   * debugging purposes
    */
   public void printAr() {
     System.out.println("    0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27\n");

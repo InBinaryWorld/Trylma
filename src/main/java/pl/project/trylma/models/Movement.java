@@ -2,6 +2,10 @@ package pl.project.trylma.models;
 
 import java.io.Serializable;
 
+/**
+ * Gives easy to use interface for sending
+ * moves to server and back
+ */
 public class Movement implements Serializable {
   static final long serialVersionUID = 1588980448693010399L;
   private Field from;

@@ -8,17 +8,21 @@ import pl.project.trylma.models.Owner;
 import java.util.List;
 
 public interface IBoard {
-  void createBoard();
+  /** returns available moves for pawn following game rules */
   List<Coord> getAvailableMoves(Field field);
-  List<Coord> getFinalCoordsFor(Owner owner);
+  /** returns opposite top of star-shape map for specified player */
   Coord getOppositeTop(Owner owner);
+  /** Makes move on board */
   void makeMove(Movement movement);
-  //new ones:
-  static void resetBoard(){}
+  static void resetBoard() {}
+  /** check whether move is correct considering game rules */
   boolean isMovementCorrect(Movement movement);
+  /** sets players on map */
   void setPlayers(List<Owner> list);
+  /** returns two dimensional integer array representation of board */
   int[][] getFields();
+  /** check if game has winner, returns value assigned to winner, 0 otherwise */
   int hasWinner();
-  //Dodana teraz:
+  /** returns list of coords occupied by player. */
   List<Coord> getOwnersPawns(Owner owner);
 }
