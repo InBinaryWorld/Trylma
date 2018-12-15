@@ -13,11 +13,11 @@ import java.util.List;
 
 public final class Board implements IBoard {
   public static Board instance;
-  /**Board representation as two dim int map*/
+  /**Board representation as two dim int map.*/
   private int [][] fields;
-  /**List of players in current game*/
+  /**List of players in current game.*/
   private List<Owner> list;
-  /**set of coords every player want get*/
+  /**set of coords every player want get.*/
   private ArrayList<ArrayList<Coord>> finalCoords;
 
 
@@ -33,7 +33,7 @@ public final class Board implements IBoard {
     setFinalCoords();
   }
 
-  /**sets values for finalCoord attribute*/
+  /**sets values for finalCoord attribute.*/
   private void setFinalCoords() {
     finalCoords = new ArrayList<ArrayList<Coord>>();
     for (int i = 0; i < 7; i++) {
@@ -95,7 +95,7 @@ public final class Board implements IBoard {
   private List<Coord> onLine(Coord coords, int x, int y, boolean lookFor) {
     Coord coordsUnderTest = new Coord(coords.getX() + x, coords.getY() + y);
     List<Coord> result = new ArrayList<Coord>();
-    if (lookFor == true) {//szukaj wolnych
+    if (lookFor == true) { //szukaj wolnych
       try {
         if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] == 7) {
           result.add(coordsUnderTest);
@@ -111,20 +111,20 @@ public final class Board implements IBoard {
       }
     } else { //szukaj zajetych
       try {
-        if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 7 &&
-                this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 0) {
+        if (this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 7
+                && this.fields[coordsUnderTest.getY()][coordsUnderTest.getX()] != 0) {
           List<Coord> temp = onLine(coordsUnderTest, x, y, true);
           if (temp != null) {
             result.addAll(temp);
           }
         }
-      } catch (ArrayIndexOutOfBoundsException e) {}
+      } catch (ArrayIndexOutOfBoundsException e) { ; }
     }
     return result;
   }
 
   /**
-   * sets specified coord as free
+   * sets specified coord as free.
    * @param coord - coord to release
    */
   private void releaseField(Coord coord) {
@@ -133,7 +133,7 @@ public final class Board implements IBoard {
 
   /**
    * Returns available coords for pawn specified by field
-   * to go to
+   * to go to.
    * @param field - pawn
    * @return - available moves
    */
@@ -163,13 +163,13 @@ public final class Board implements IBoard {
   }
 
 
-  /**Makes part of job in searching availables moves*/
+  /**Makes part of job in searching availables moves.*/
   private ArrayList<Coord> commonPart(ArrayList<Coord> b, ArrayList<Coord> a) {
     ArrayList<Coord> common = new ArrayList<Coord>();
     for (Coord c1 : b) {
       for (Coord c2 : a) {
-        if (c1.getX() == c2.getX() &&
-                c1.getY() == c2.getY()) {
+        if (c1.getX() == c2.getX()
+                && c1.getY() == c2.getY()) {
           common.add(c1);
         }
       }
@@ -177,11 +177,11 @@ public final class Board implements IBoard {
     return common;
   }
 
-  /**Makes part of job in searching available moves*/
+  /**Makes part of job in searching available moves.*/
   private boolean contain(final ArrayList<Coord> ar, final Coord coord) {
     for (Coord crd : ar) {
-      if (crd.getX() == coord.getX() &&
-              crd.getY() == coord.getY()) {
+      if (crd.getX() == coord.getX()
+              && crd.getY() == coord.getY()) {
         return true;
       }
     }
@@ -198,7 +198,7 @@ public final class Board implements IBoard {
 
 
   /**
-   * Returns opposite top of star-shape mape
+   * Returns opposite top of star-shape mape.
    * @param owner - for which player return the top
    * @return      - returns top coords. If bad arg returns null
    */
@@ -215,7 +215,7 @@ public final class Board implements IBoard {
   }
 
   /**
-   * Makes move on map by releasing field and occuping other
+   * Makes move on map by releasing field and occuping other.
    * @param movement - information about move
    */
   public void makeMove(Movement movement) {
@@ -229,7 +229,7 @@ public final class Board implements IBoard {
   }
 
   /**
-   * Checks whether the movement follows the game rules
+   * Checks whether the movement follows the game rules.
    * @param movement - information about move
    * @return - boolean value (true if correct)
    */
@@ -247,7 +247,7 @@ public final class Board implements IBoard {
   }
 
   /**
-   * Sets players on board following game rules
+   * Sets players on board following game rules.
    * @param list - list of player
    */
   @Override
@@ -274,9 +274,9 @@ public final class Board implements IBoard {
   }
 
   /**
-   * Check if game has Winner
+   * Check if game has Winner.
    * @return value assignated for player
-   * or 0 if there is no winner
+   *         or 0 if there is no winner
    */
   @Override
   public int hasWinner() {
@@ -286,8 +286,8 @@ public final class Board implements IBoard {
       List<Coord> pawns = getOwnersPawns(owner);
       for (Coord finalCoord : finalCoords.get(owner.getValue())) {
         for (Coord actualCoord : pawns) {
-          if (actualCoord.getX() == finalCoord.getX() &&
-                  actualCoord.getY() == finalCoord.getY()) {
+          if (actualCoord.getX() == finalCoord.getX()
+                  && actualCoord.getY() == finalCoord.getY()) {
             checker++;
           }
         }
@@ -300,7 +300,7 @@ public final class Board implements IBoard {
     return 0;
   }
 
-  /**
+  /**.
    * @param owner - player
    * @return - list of coords occupied by owner.
    */
@@ -318,7 +318,7 @@ public final class Board implements IBoard {
   }
 
   /**
-   * gives two dimensional, integer, board representaton
+   * gives two dimensional, integer, board representaton.
    * of current game
    * @return two dimensional array associated with game
    */
@@ -329,24 +329,25 @@ public final class Board implements IBoard {
 
   /**
    * puts value on specified position on board,
-   * mainly for debugging
+   * mainly for debugging.
    */
   void setField(int x, int y, int var) {
     fields[y][x] = var;
   }
 
   /**
-   * returns value of specified field by coord
+   * returns value of specified field by coord.
    */
   int getField(Coord coord) {
     return fields[coord.getY()][coord.getX()];
   }
 
   /**
-   * debugging purposes
+   * debugging purposes.
    */
   public void printAr() {
-    System.out.println("    0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27\n");
+    System.out.println("    0  1  2  3  4  5  6  7  8  9  10 11 " +
+            "12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27\n");
     for (int i = 0; i < 17; i++) {
       if (i < 10) {
         System.out.print(i + "   ");
@@ -354,10 +355,12 @@ public final class Board implements IBoard {
         System.out.print(i + "  ");
       }
       for (int j = 0; j < 26; j++) {
-        if (this.fields[i][j] == 0)
+        if (this.fields[i][j] == 0) {
           System.out.print("   ");
-        else
-          System.out.print(this.fields[i][j]+"  ");
+        }
+        else {
+          System.out.print(this.fields[i][j] + "  ");
+        }
       }
       System.out.print("\n");
     }
