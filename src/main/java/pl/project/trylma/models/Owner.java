@@ -1,7 +1,8 @@
 package pl.project.trylma.models;
 
 /**
- * Enum for easy recognizing players on board
+ * Enum for easy recognizing players on board.
+ * NONE value is associated to free coords.
  */
 public enum Owner {
   NONE(7),
@@ -16,6 +17,17 @@ public enum Owner {
   Owner(int v) {
     this.value = v;
   }
+
+  /**
+   * @return
+   * 1  - Owner.FIRST,
+   * 2  - Owner.SECOND,
+   * 3  - Owner.THIRD,
+   * 4  - Owner.FOURTH,
+   * 5  - Owner.FIFTH,
+   * 6  - Owner.SIXTH,
+   * 7  - Owner.NONE
+   */
   public int getValue() {
     return value;
   }

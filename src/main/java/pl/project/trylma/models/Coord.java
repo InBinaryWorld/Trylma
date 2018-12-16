@@ -11,10 +11,18 @@ public class Coord implements Serializable {
   private int x;
   private int y;
 
+  /**
+   * .
+   * @return horizontal position in array
+   */
   public int getX() {
     return x;
   }
 
+  /**
+   * .
+   * @return vertical position in array
+   */
   public int getY() {
     return y;
   }
