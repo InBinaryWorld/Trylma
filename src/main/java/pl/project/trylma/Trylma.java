@@ -1,5 +1,6 @@
 package pl.project.trylma;
 
+import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.board.Board;
@@ -17,20 +18,22 @@ class Trylma {
 
 
   Trylma() {
-    Board.resetBoard();
     board = Board.getInstance();
     players = new ArrayList<>();
     curPlayer = 0;
   }
 
-  void startGame() {
+  /**
+   * There is loop which controls game.
+   * @throws DisconnectException
+   */
+  void startGame() throws DisconnectException {
     int winner;
     Movement movement;
     setPlayersOnBoard();
     sendBaseBoardToPlayers();
     while (true) {
-
-      if (numOfConnectedPlayers() < 1) {
+      if (!areAllConnected()) {
         endGame(Owner.NONE);
         break;
       }
@@ -39,14 +42,9 @@ class Trylma {
         board.makeMove(movement);
         sendMoveToPlayers(movement);
       }
-//      if ((winner = hasWinner()) != -1) {
-//        endGame(players.get(winner).getId());
-//        break;
-//      }
-//      Zamienilem na:
       if ((winner = hasWinner()) != 0) {
-        for(IPlayer player: players){
-          if(player.getId().getValue()==winner)
+        for (IPlayer player : players) {
+          if (player.getId().getValue() == winner)
             endGame(player.getId());
         }
         break;
@@ -55,45 +53,61 @@ class Trylma {
       if (curPlayer >= numPlayers) {
         curPlayer = 0;
       }
-
     }
   }
 
-  private void sendBaseBoardToPlayers() {
-
-
+  /**
+   * Send board to all players.
+   * @throws DisconnectException
+   */
+  private void sendBaseBoardToPlayers() throws DisconnectException {
     for (IPlayer player : players) {
       player.sendBoardTab();
     }
   }
 
-  private Movement currentPlayerMove() {
+  /**
+   * Player which id on 'curPlayer' position
+   * on list 'players' makes move.
+   * @return
+   * @throws DisconnectException
+   */
+  private Movement currentPlayerMove() throws DisconnectException {
     return players.get(curPlayer).makeMove();
   }
 
-  private void sendMoveToPlayers(Movement move) {
+  /**
+   * Sends Movement object to all player.
+   * @param move
+   * @throws DisconnectException
+   */
+  private void sendMoveToPlayers(Movement move) throws DisconnectException {
     for (IPlayer player : players) {
       player.sendMove(move);
     }
   }
 
-
+  /**
+   * Check if there is any winner.
+   * @return
+   */
   private int hasWinner() {
     return board.hasWinner();
   }
 
   /**
-   * gdy jest remis przekazuje NONE
-   * gdy ktoś wygra przekazuje jego OwnerID
-   *
-   * @param winner identyfikator zwyciężcy
+   * Sends to players result
+   * of this game.
    */
-  private void endGame(Owner winner) {
+  void endGame(Owner winner) {
     for (IPlayer player : players) {
       player.endGame(winner);
     }
   }
 
+  /**
+   * Set players on board.
+   */
   private void setPlayersOnBoard() {
     List<Owner> list = new ArrayList<>();
     for (IPlayer player : players) {
@@ -102,22 +116,31 @@ class Trylma {
     board.setPlayers(list);
   }
 
+  /**
+   * Add player.
+   * @param player
+   */
   void addPlayer(IPlayer player) {
     players.add(player);
   }
 
+  /**
+   * Set number of players.
+   * @param numPlayers
+   */
   void setNumPlayers(int numPlayers) {
     this.numPlayers = numPlayers;
   }
 
-  private int numOfConnectedPlayers() {
-    int count = 0;
+  /**
+   * Checks if all players are connected.
+   * @return
+   */
+  boolean areAllConnected() {
     for (IPlayer player : players) {
-      if (player.isConnected()) {
-        count++;
-      }
+      if (!player.isConnected())
+        return false;
     }
-    return count;
+    return true;
   }
-
 }

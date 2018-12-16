@@ -21,6 +21,7 @@
         <maven.compiler.target>9</maven.compiler.target>
     </properties>
     <build>
+        <testSourceDirectory>src/test</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

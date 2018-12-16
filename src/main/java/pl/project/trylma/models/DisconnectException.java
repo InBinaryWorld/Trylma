@@ -1,3 +1,8 @@
 package pl.project.trylma.models;
 
-public class DisconnectException extends Exception {}
+/**
+ * Exception is throwed when
+ * any player leave game.
+ */
+public class DisconnectException extends Exception {
+}

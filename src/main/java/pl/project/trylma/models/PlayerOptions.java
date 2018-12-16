@@ -2,6 +2,10 @@ package pl.project.trylma.models;
 
 import java.io.Serializable;
 
+/**
+ * Class stores number of players
+ * and theirs details.
+ */
 public class PlayerOptions implements Serializable {
   static final long serialVersionUID = 2588980448693010399L;
 

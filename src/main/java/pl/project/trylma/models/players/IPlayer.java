@@ -1,21 +1,51 @@
 package pl.project.trylma.models.players;
 
+import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
 
 public interface IPlayer {
+  /**
+   * Player do move.
+   * @return player's move.
+   * @throws DisconnectException
+   */
+  Movement makeMove() throws DisconnectException;
 
-  Movement makeMove();
-
+  /**
+   * @return player's id.
+   */
   Owner getId();
 
-  void sendMessage(String command);
+  /**
+   * Send message to player.
+   * @param message message content.
+   * @throws DisconnectException
+   */
+  void sendMessage(String message) throws DisconnectException;
 
-  void sendMove(Movement movement);
+  /**
+   * Sends move which one of players done.
+   * @param movement
+   * @throws DisconnectException
+   */
+  void sendMove(Movement movement) throws DisconnectException;
 
+  /**
+   * Inform player about the end of the game.
+   * @param winner
+   */
   void endGame(Owner winner);
 
+  /**
+   * Check if player is connect to the server.
+   * @return true if is connected;
+   */
   boolean isConnected();
 
-  void sendBoardTab();
+  /**
+   * Send board to player.
+   * @throws DisconnectException
+   */
+  void sendBoardTab() throws DisconnectException;
 }

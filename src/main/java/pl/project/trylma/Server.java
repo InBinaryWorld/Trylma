@@ -3,6 +3,7 @@ package pl.project.trylma;
 import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
+import pl.project.trylma.models.Result;
 import pl.project.trylma.models.board.Board;
 import pl.project.trylma.models.players.BotPlayer;
 import pl.project.trylma.models.players.RealPlayer;
@@ -14,37 +15,40 @@ public class Server {
   private static Owner currentOwner = Owner.FIRST;
   private static PlayerOptions playerOptions;
 
+  /**
+   * Open server socket and start loop.
+   * @param args All are ignored.
+   */
   public static void main(String[] args) {
     ServerSocket listener = null;
     try {
       listener = new ServerSocket(9001);
     } catch (IOException e) {
-      e.printStackTrace();
-      System.exit(1);
+      System.out.println("Cannot create server on port 9001");
+      System.exit(0);
     }
-    currentOwner = Owner.FIRST;
+    loop(listener);
+  }
+
+  /**
+   * Creates new game, and adds players.
+   * At the end it starts game.
+   * @param listener server socket.
+   */
+  private static void loop(ServerSocket listener) {
     RealPlayer player;
-    log("Trylma Server is Running");
+    Trylma trylma;
+    log("Trylma Server is running");
     while (true) {
       log("Creating new game");
-      Trylma trylma = new Trylma();
+      trylma = new Trylma();
       try {
         player = new RealPlayer(listener.accept(), currentOwner);
         playerOptions = player.getPlayerOptions();
-        player.sendMessage("Waiting for other players...");
         trylma.addPlayer(player);
         log("Waiting for players...");
         for (int i = 1; i < playerOptions.getReal(); i++) {
-          nextOwner();
-          while (true) {
-            try {
-              player = new RealPlayer(listener.accept(), currentOwner);
-              break;
-            } catch (DisconnectException | IOException ignored) {
-            }
-          }
-          player.sendMessage("Waiting for other players...");
-          trylma.addPlayer(player);
+          addRealPlayer(trylma,listener);
         }
         log("Adding bots...");
         for (int i = 0; i < playerOptions.getBot(); i++) {
@@ -56,17 +60,41 @@ public class Server {
         trylma.startGame();
         log("End Game");
       } catch (DisconnectException | IOException e) {
-        log("First Player Disconected, Game is Reset");
+        log("Player Disconnect, Game Reset");
+        trylma.endGame(null);
       }
-      reset();
+      currentOwner = Owner.FIRST;
+      Board.resetBoard();
     }
-
   }
 
-  private static void reset() {
-    currentOwner = Owner.FIRST;
+  /**
+   * Connect and adds RealPlayers to Trylma object.
+   * @param trylma players are added to this Trylma object.
+   * @param listener server socket.
+   * @throws DisconnectException
+   */
+  private static void addRealPlayer(Trylma trylma, ServerSocket listener) throws DisconnectException {
+    RealPlayer player;
+    nextOwner();
+    while (true) {
+      if(!trylma.areAllConnected()){
+        throw new DisconnectException();
+      }
+      try {
+        player = new RealPlayer(listener.accept(), currentOwner);
+        break;
+      } catch (DisconnectException | IOException ignored) {
+      }
+    }
+    player.sendMessage("Waiting for other players...");
+    trylma.addPlayer(player);
   }
 
+  /**
+   * Set a next currentOwner value,
+   * depending on number of players.
+   */
   private static void nextOwner() {
     if (playerOptions.getNumOfPlayers() == 3) {
       switch (currentOwner) {
@@ -104,6 +132,10 @@ public class Server {
     }
   }
 
+  /**
+   * Logs message, send them on standard output.
+   * @param message String message.
+   */
   private static void log(String message) {
     System.out.println(message);
   }

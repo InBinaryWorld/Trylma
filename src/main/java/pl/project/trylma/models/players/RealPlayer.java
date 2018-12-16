@@ -7,79 +7,90 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import static java.lang.Thread.sleep;
-
 public class RealPlayer extends AbstractPlayer {
   private Socket socket;
   private ObjectInputStream in;
   private ObjectOutputStream out;
 
+  /**
+   * Create input and output streams
+   * and send player's id to client.
+   * @param socket player's socket.
+   * @param id players id.
+   * @throws DisconnectException
+   */
   public RealPlayer(Socket socket, Owner id) throws DisconnectException {
     super(id);
     this.socket = socket;
-    isConnected = true;
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
       in = new ObjectInputStream(socket.getInputStream());
-
     } catch (IOException e) {
       disconnectPlayer();
-      throw new DisconnectException();
     }
     sendId();
   }
 
-  public Movement makeMove() {
+  /**
+   * Taking move from client.
+   * @return player's move.
+   * @throws DisconnectException
+   */
+  @Override
+  public Movement makeMove() throws DisconnectException {
     Object object;
     Movement movement = null;
-    if (isConnected) {
-      sendMessage("Twój ruch");
-      try {
-        while (true) {
-          out.writeObject("YOUR_MOVE");
-          object = in.readObject();
-          if (object instanceof Movement) {
-            movement = (Movement) object;
-            if (board.isMovementCorrect(movement))
-              break;
-          }
-          if (object == null) {
-            return null;
-          }
+    sendMessage("Your turn");
+    try {
+      while (true) {
+        out.writeObject("YOUR_MOVE");
+        object = in.readObject();
+        if (object instanceof Movement) {
+          movement = (Movement) object;
+          if (board.isMovementCorrect(movement))
+            break;
         }
-      } catch (IOException | ClassNotFoundException e) {
-        disconnectPlayer();
-        return null;
+        if (object == null) {
+          return null;
+        }
       }
-      sendMessage("Czekaj na swój ruch...");
-      return movement;
-    } else {
-      return null;
+    } catch (IOException | ClassNotFoundException e) {
+      disconnectPlayer();
     }
+    sendMessage("Wait for your turn...");
+    return movement;
   }
 
-  public void sendMessage(String command) {
-    if (isConnected) {
-      try {
-        out.writeObject("MESSAGE");
-        out.writeObject(command);
-      } catch (IOException e) {
-        disconnectPlayer();
-      }
-    }
-  }
-
+  /**
+   * Send message to client.
+   * @param message message content.
+   * @throws DisconnectException
+   */
   @Override
-  public void sendMove(Movement movement) {
-    System.out.println(id+"Real move!");
-    if (isConnected) {
-      try {
-        out.writeObject("DO_MOVE");
-        out.writeObject(movement);
-      } catch (IOException e) {
-        disconnectPlayer();
-      }
+  public void sendMessage(String message) throws DisconnectException {
+    try {
+      out.writeObject("MESSAGE");
+      out.writeObject(message);
+    } catch (IOException e) {
+      disconnectPlayer();
+    }
+
+  }
+
+  /**
+   * send
+   * @param movement
+   * @throws DisconnectException
+   */
+  @Override
+  public void sendMove(Movement movement) throws DisconnectException {
+    System.out.println(id + " Real move!");
+    try {
+      out.writeObject("DO_MOVE");
+      out.writeObject(movement);
+    } catch (IOException e) {
+      disconnectPlayer();
     }
   }
 
@@ -87,19 +98,37 @@ public class RealPlayer extends AbstractPlayer {
   public void endGame(Owner winner) {
     try {
       out.writeObject("END_GAME");
-      if (winner.equals(Owner.NONE))
-        out.writeObject(Result.Win);
-      if (id.equals(winner))
-        out.writeObject(Result.Win);
-      out.writeObject(Result.Defeat);
+      if (winner == null) {
+        out.writeObject(Result.PlayerDisconnected);
+      } else {
+        if (winner.equals(Owner.NONE))
+          out.writeObject(Result.Tie);
+        if (id.equals(winner))
+          out.writeObject(Result.Win);
+        out.writeObject(Result.Defeat);
+      }
     } catch (IOException ignored) {
     }
-    disconnectPlayer();
+    try {
+      socket.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
-  public void sendBoardTab() {
+  public boolean isConnected() {
+    try {
+      out.writeObject("TEST");
+      out.writeObject("TEST");
+    } catch (IOException e) {
+      return false;
+    }
+    return true;
+  }
 
+  @Override
+  public void sendBoardTab() throws DisconnectException {
     try {
       out.writeObject("SET_BASEBOARD");
       out.writeObject(board.getFields());
@@ -108,46 +137,54 @@ public class RealPlayer extends AbstractPlayer {
     }
   }
 
-  private void disconnectPlayer() {
-    isConnected = false;
+  /**
+   * Closing player's socket.
+   * @throws DisconnectException
+   */
+  private void disconnectPlayer() throws DisconnectException {
     try {
       socket.close();
     } catch (IOException ignored) {
     }
     System.out.println("Player disconnected :" + id.getValue());
+    throw new DisconnectException();
   }
 
+  /**
+   * Take game settings from client.
+   * @return informations about players in game.
+   * @throws DisconnectException
+   */
   public PlayerOptions getPlayerOptions() throws DisconnectException {
-    Object object = null;
+    Object object;
     int numb;
-    try {
-      while (true) {
+    while (true) {
+      try {
         out.writeObject("SET_SERVER_OPTIONS");
         object = in.readObject();
         if (object instanceof PlayerOptions) {
           numb = ((PlayerOptions) object).getNumOfPlayers();
-          if (numb < 7 && numb > 1 && numb!=5)
+          if (numb < 7 && numb > 1 && numb != 5)
             break;
-        } else {
-          throw new IOException();
         }
+      } catch (ClassNotFoundException | IOException e) {
+        disconnectPlayer();
       }
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-      disconnectPlayer();
-
-      throw new DisconnectException();
     }
-    return (PlayerOptions)object;
+    sendMessage("Waiting for other players...");
+    return (PlayerOptions) object;
   }
 
+  /**
+   * Send player's ID to client.
+   * @throws DisconnectException
+   */
   private void sendId() throws DisconnectException {
     try {
       out.writeObject("SET_ID");
       out.writeObject(id);
     } catch (IOException e) {
       disconnectPlayer();
-      throw new DisconnectException();
     }
   }
 }

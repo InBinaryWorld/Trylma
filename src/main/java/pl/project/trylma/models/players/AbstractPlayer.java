@@ -1,6 +1,5 @@
 package pl.project.trylma.models.players;
 
-import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.board.Board;
 import pl.project.trylma.models.board.IBoard;
@@ -8,8 +7,10 @@ import pl.project.trylma.models.board.IBoard;
 public abstract class AbstractPlayer implements IPlayer {
   Owner id;
   IBoard board;
-  boolean isConnected = false;
 
+  /**
+   * @return player's id.
+   */
   public Owner getId() {
     return id;
   }
@@ -23,13 +24,4 @@ public abstract class AbstractPlayer implements IPlayer {
     setId(id);
   }
 
-  //TODO: -return (Wywolujemy metode np. boolean board.sprawdzRuchDlaPionka(move.getFrom()))
-  private boolean isMoveCorrect(Movement move) {
-    return false;
-  }
-
-  @Override
-  public boolean isConnected() {
-    return isConnected;
-  }
 }
