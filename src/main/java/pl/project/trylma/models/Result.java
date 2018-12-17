@@ -1,5 +1,12 @@
 package pl.project.trylma.models;
 
 public enum Result {
-  Win,Defeat,Tie,PlayerDisconnected
+  FIRST,
+  SECOND,
+  THIRD,
+  FOURTH,
+  FIFTH,
+  SIXTH,
+  Tie,
+  PlayerDisconnected
 }

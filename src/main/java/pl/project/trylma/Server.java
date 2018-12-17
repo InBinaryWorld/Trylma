@@ -3,7 +3,6 @@ package pl.project.trylma;
 import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
-import pl.project.trylma.models.Result;
 import pl.project.trylma.models.board.Board;
 import pl.project.trylma.models.players.BotPlayer;
 import pl.project.trylma.models.players.RealPlayer;

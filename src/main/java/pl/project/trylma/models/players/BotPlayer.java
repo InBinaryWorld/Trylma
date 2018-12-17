@@ -1,9 +1,6 @@
 package pl.project.trylma.models.players;
 
-import pl.project.trylma.models.Coord;
-import pl.project.trylma.models.Field;
-import pl.project.trylma.models.Movement;
-import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +34,9 @@ public class BotPlayer extends AbstractPlayer {
     Random rand = new Random();
     Movement movement;
 
+    if(board.getResult().contains(id))
+      return null;
+
     try {
       sleep(1000);
     } catch (InterruptedException e) {
@@ -54,8 +54,8 @@ public class BotPlayer extends AbstractPlayer {
           tmp.add(new Movement(pawn, move, id));
         } else if (delta - maxDelta >= -0.15) {
           if (delta - maxDelta <= 0.15) {
-            if (getDistance(pawn) - getDistance(from) > -0.05) {
-              if (getDistance(pawn) - getDistance(from) < 0.05) {
+            if (getDistance(pawn) - getDistance(from) > -0.02) {
+              if (getDistance(pawn) - getDistance(from) < 0.02) {
                 tmp.add(new Movement(pawn, move, id));
               } else {
                 tmp.clear();
@@ -95,6 +95,7 @@ public class BotPlayer extends AbstractPlayer {
   /**
    * Ignore
    */
+  @Override
   public void sendMessage(String message) {
   }
 
@@ -109,7 +110,8 @@ public class BotPlayer extends AbstractPlayer {
    * Ignore
    */
   @Override
-  public void endGame(Owner winner) {
+  public void endGame(Result result){
+
   }
 
   /**

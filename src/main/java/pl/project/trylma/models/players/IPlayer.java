@@ -3,6 +3,7 @@ package pl.project.trylma.models.players;
 import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.Result;
 
 public interface IPlayer {
   /**
@@ -33,9 +34,9 @@ public interface IPlayer {
 
   /**
    * Inform player about the end of the game.
-   * @param winner
+   * @param result
    */
-  void endGame(Owner winner);
+  void endGame(Result result);
 
   /**
    * Check if player is connect to the server.

@@ -39,6 +39,8 @@ public class RealPlayer extends AbstractPlayer {
    */
   @Override
   public Movement makeMove() throws DisconnectException {
+    if(board.getResult().contains(id))
+      return null;
     Object object;
     Movement movement = null;
     sendMessage("Your turn");
@@ -52,7 +54,7 @@ public class RealPlayer extends AbstractPlayer {
             break;
         }
         if (object == null) {
-          return null;
+          break;
         }
       }
     } catch (IOException | ClassNotFoundException e) {
@@ -95,17 +97,13 @@ public class RealPlayer extends AbstractPlayer {
   }
 
   @Override
-  public void endGame(Owner winner) {
+  public void endGame(Result result) {
     try {
       out.writeObject("END_GAME");
-      if (winner == null) {
+      if (result == null) {
         out.writeObject(Result.PlayerDisconnected);
       } else {
-        if (winner.equals(Owner.NONE))
-          out.writeObject(Result.Tie);
-        if (id.equals(winner))
-          out.writeObject(Result.Win);
-        out.writeObject(Result.Defeat);
+        out.writeObject(result);
       }
     } catch (IOException ignored) {
     }

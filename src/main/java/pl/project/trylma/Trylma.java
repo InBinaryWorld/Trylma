@@ -3,6 +3,7 @@ package pl.project.trylma;
 import pl.project.trylma.models.DisconnectException;
 import pl.project.trylma.models.Movement;
 import pl.project.trylma.models.Owner;
+import pl.project.trylma.models.Result;
 import pl.project.trylma.models.board.Board;
 import pl.project.trylma.models.board.IBoard;
 import pl.project.trylma.models.players.IPlayer;
@@ -10,14 +11,16 @@ import pl.project.trylma.models.players.IPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-class Trylma {
-  private List<IPlayer> players;
+public class Trylma {
+  protected List<IPlayer> players;
   private IBoard board;
   private int curPlayer;
   private int numPlayers;
+  private Result place;
 
 
-  Trylma() {
+  public Trylma() {
+    place = Result.FIRST;
     board = Board.getInstance();
     players = new ArrayList<>();
     curPlayer = 0;
@@ -25,16 +28,17 @@ class Trylma {
 
   /**
    * There is loop which controls game.
+   *
    * @throws DisconnectException
    */
   void startGame() throws DisconnectException {
-    int winner;
+    ArrayList<Owner> result;
     Movement movement;
     setPlayersOnBoard();
     sendBaseBoardToPlayers();
     while (true) {
       if (!areAllConnected()) {
-        endGame(Owner.NONE);
+        endGame(null);
         break;
       }
       movement = currentPlayerMove();
@@ -42,11 +46,8 @@ class Trylma {
         board.makeMove(movement);
         sendMoveToPlayers(movement);
       }
-      if ((winner = hasWinner()) != 0) {
-        for (IPlayer player : players) {
-          if (player.getId().getValue() == winner)
-            endGame(player.getId());
-        }
+      if ((result = hasWinner()).size() == numPlayers - 1) {
+        endGame(result);
         break;
       }
       curPlayer++;
@@ -56,8 +57,10 @@ class Trylma {
     }
   }
 
+
   /**
    * Send board to all players.
+   *
    * @throws DisconnectException
    */
   private void sendBaseBoardToPlayers() throws DisconnectException {
@@ -69,7 +72,7 @@ class Trylma {
   /**
    * Player which id on 'curPlayer' position
    * on list 'players' makes move.
-   * @return
+   *
    * @throws DisconnectException
    */
   private Movement currentPlayerMove() throws DisconnectException {
@@ -78,7 +81,7 @@ class Trylma {
 
   /**
    * Sends Movement object to all player.
-   * @param move
+   *
    * @throws DisconnectException
    */
   private void sendMoveToPlayers(Movement move) throws DisconnectException {
@@ -88,21 +91,11 @@ class Trylma {
   }
 
   /**
-   * Check if there is any winner.
-   * @return
+   * Return list of players (id)
+   * who finished the game.
    */
-  private int hasWinner() {
+  private ArrayList<Owner> hasWinner() {
     return board.hasWinner();
-  }
-
-  /**
-   * Sends to players result
-   * of this game.
-   */
-  void endGame(Owner winner) {
-    for (IPlayer player : players) {
-      player.endGame(winner);
-    }
   }
 
   /**
@@ -118,29 +111,85 @@ class Trylma {
 
   /**
    * Add player.
-   * @param player
    */
-  void addPlayer(IPlayer player) {
+  public void addPlayer(IPlayer player) {
     players.add(player);
   }
 
   /**
    * Set number of players.
-   * @param numPlayers
    */
-  void setNumPlayers(int numPlayers) {
+  public void setNumPlayers(int numPlayers) {
     this.numPlayers = numPlayers;
   }
 
   /**
    * Checks if all players are connected.
-   * @return
    */
-  boolean areAllConnected() {
+  public boolean areAllConnected() {
     for (IPlayer player : players) {
       if (!player.isConnected())
         return false;
     }
     return true;
+  }
+
+
+  /**
+   * Sends to players result
+   * of this game.
+   */
+  public void endGame(ArrayList<Owner> result) {
+    if (result == null) {
+      for (IPlayer player : players) {
+        player.endGame(Result.PlayerDisconnected);
+      }
+    } else {
+      for (IPlayer player : players) {
+        if (!result.contains(player.getId()))
+          result.add(player.getId());
+      }
+      for (Owner owner : result) {
+        for (IPlayer player : players) {
+          if (owner.equals(player.getId())) {
+            player.endGame(place);
+            nextPlace();
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Iterate after Result values.
+   */
+  private void nextPlace() {
+    switch (place) {
+      case FIRST:
+        place = Result.SECOND;
+        break;
+      case SECOND:
+        place = Result.THIRD;
+        break;
+      case THIRD:
+        place = Result.FOURTH;
+        break;
+      case FOURTH:
+        place = Result.FIFTH;
+        break;
+      case FIFTH:
+        place = Result.SIXTH;
+        break;
+      case SIXTH:
+        place = Result.FIRST;
+        break;
+    }
+  }
+
+  /**
+   * returns list of players in game
+   */
+  public List<IPlayer> getPlayers() {
+    return players;
   }
 }

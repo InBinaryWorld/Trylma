@@ -19,6 +19,8 @@ public final class Board implements IBoard {
   private List<Owner> list;
   /**set of coords every player want get.*/
   private ArrayList<ArrayList<Coord>> finalCoords;
+  /**list of players (id) who finished the game.*/
+  private ArrayList<Owner> result;
 
 
   private Board() {
@@ -27,6 +29,7 @@ public final class Board implements IBoard {
 
 
   private void createBoard() {
+    result = new ArrayList<>();
     final BoardBuilder builder = new BaseBoardBuilder();
     final BoardBuildDirector director = new BoardBuildDirector(builder);
     this.fields = ((int [][]) director.construct());
@@ -273,13 +276,10 @@ public final class Board implements IBoard {
     }
   }
 
-  /**
-   * Check if game has Winner.
-   * @return value assignated for player
-   *         or 0 if there is no winner
-   */
+  /** Return list of players (id)
+   * who finished the game.*/
   @Override
-  public int hasWinner() {
+  public ArrayList<Owner> hasWinner() {
     final int numOfPawns = 10;
     int checker = 0;
     for (Owner owner : list) {
@@ -293,11 +293,12 @@ public final class Board implements IBoard {
         }
       }
       if (checker == numOfPawns) {
-        return owner.getValue();
+        if (!result.contains(owner))
+          result.add(owner);
       }
       checker = 0;
     }
-    return 0;
+    return result;
   }
 
   /**.
@@ -364,5 +365,10 @@ public final class Board implements IBoard {
       }
       System.out.print("\n");
     }
+  }
+
+  /** Returns players who finished game. */
+  public ArrayList<Owner> getResult() {
+    return result;
   }
 }

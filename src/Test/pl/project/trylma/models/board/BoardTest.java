@@ -135,9 +135,9 @@ public class BoardTest {
     board.setField(18, 12, Owner.FIRST.getValue());
     board.setField(20, 12, Owner.FIRST.getValue());
     board.setField(22, 12, Owner.FIRST.getValue());
-    assertEquals("HasWinner", 0, board.hasWinner());
+    assertEquals("HasWinner", 0, board.hasWinner().size());
     board.setField(24, 12, Owner.FIRST.getValue());
-    assertEquals("hasWinner", 1, board.hasWinner());
+    assertEquals("hasWinner", 1, board.hasWinner().get(0).getValue());
   }
 
   @Test
