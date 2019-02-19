@@ -3,47 +3,52 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="397.0" y="542.0">pl.project.trylma.Server</node>
-    <node x="212.0" y="542.0">pl.project.trylma.Models.Owner</node>
-    <node x="0.0" y="335.0">pl.project.trylma.Models.players.RealPlayer</node>
-    <node x="265.0" y="379.5">pl.project.trylma.Models.players.BotPlayer</node>
-    <node x="515.0" y="0.0">pl.project.trylma.Trylma</node>
-    <node x="116.0" y="145.0">pl.project.trylma.Models.players.AbstractPlayer</node>
-    <node x="0.0" y="710.0">pl.project.trylma.Models.Field</node>
-    <node x="24.5" y="542.0">pl.project.trylma.Models.Coord</node>
-    <node x="142.5" y="0.0">pl.project.trylma.Models.players.IPlayer</node>
+    <node x="125.0" y="459.0">pl.project.trylma.Server</node>
+    <node x="0.0" y="158.0">pl.project.trylma.models.players.BotPlayer</node>
+    <node x="67.75" y="0.0">pl.project.trylma.models.players.IPlayer</node>
+    <node x="266.0" y="0.0">pl.project.trylma.models.board.IBoard</node>
+    <node x="125.0" y="232.0">pl.project.trylma.models.DisconnectException</node>
+    <node x="0.0" y="232.0">pl.project.trylma.models.Coord</node>
+    <node x="0.0" y="459.0">pl.project.trylma.models.Result</node>
+    <node x="328.0" y="232.0">pl.project.trylma.models.PlayerOptions</node>
+    <node x="0.0" y="385.0">pl.project.trylma.models.Movement</node>
+    <node x="47.25" y="79.0">pl.project.trylma.models.players.AbstractPlayer</node>
+    <node x="149.0" y="385.0">pl.project.trylma.Trylma</node>
+    <node x="278.0" y="385.0">pl.project.trylma.models.Owner</node>
+    <node x="118.0" y="158.0">pl.project.trylma.models.players.RealPlayer</node>
+    <node x="267.5" y="79.0">pl.project.trylma.models.board.Board</node>
+    <node x="3.5" y="311.0">pl.project.trylma.models.Field</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="pl.project.trylma.Models.Field" target="pl.project.trylma.Models.Coord">
-      <point x="0.0" y="-37.0" />
-      <point x="0.0" y="59.0" />
+    <edge source="pl.project.trylma.models.board.Board" target="pl.project.trylma.models.board.IBoard">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
     </edge>
-    <edge source="pl.project.trylma.Models.players.AbstractPlayer" target="pl.project.trylma.Models.players.IPlayer">
-      <point x="0.0" y="-70.0" />
-      <point x="0.0" y="47.5" />
+    <edge source="pl.project.trylma.models.Field" target="pl.project.trylma.models.Coord">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
     </edge>
-    <edge source="pl.project.trylma.Models.players.BotPlayer" target="pl.project.trylma.Models.players.AbstractPlayer">
-      <point x="0.0" y="-36.5" />
-      <point x="367.5" y="310.0" />
-      <point x="309.5" y="310.0" />
-      <point x="64.5" y="70.0" />
+    <edge source="pl.project.trylma.models.players.RealPlayer" target="pl.project.trylma.models.players.AbstractPlayer">
+      <point x="0.0" y="-14.5" />
+      <point x="169.5" y="133.0" />
+      <point x="140.25" y="133.0" />
+      <point x="31.0" y="14.5" />
     </edge>
-    <edge source="pl.project.trylma.Models.players.RealPlayer" target="pl.project.trylma.Models.players.AbstractPlayer">
-      <point x="0.0" y="-81.0" />
-      <point x="122.5" y="310.0" />
-      <point x="180.5" y="310.0" />
-      <point x="-64.5" y="70.0" />
+    <edge source="pl.project.trylma.models.players.BotPlayer" target="pl.project.trylma.models.players.AbstractPlayer">
+      <point x="0.0" y="-14.5" />
+      <point x="49.0" y="133.0" />
+      <point x="78.25" y="133.0" />
+      <point x="-31.0" y="14.5" />
+    </edge>
+    <edge source="pl.project.trylma.models.players.AbstractPlayer" target="pl.project.trylma.models.players.IPlayer">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="215.0" y="423.0" />
-  <SelectedNodes>
-    <node>pl.project.trylma.Models.players.IPlayer</node>
-  </SelectedNodes>
-  <Categories>
-    <Category>Fields</Category>
-    <Category>Methods</Category>
-  </Categories>
+  <settings layout="Hierarchic Group" zoom="0.5015337423312883" x="673.0" y="642.0" />
+  <SelectedNodes />
+  <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
 </Diagram>

@@ -1,29 +1,82 @@
 package pl.project.trylma;
 
 import pl.project.trylma.models.DisconnectException;
+import pl.project.trylma.models.Logger;
 import pl.project.trylma.models.Owner;
 import pl.project.trylma.models.PlayerOptions;
 import pl.project.trylma.models.board.Board;
 import pl.project.trylma.models.players.BotPlayer;
 import pl.project.trylma.models.players.RealPlayer;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 
 public class Server {
   private static Owner currentOwner = Owner.FIRST;
   private static PlayerOptions playerOptions;
 
-  /**
-   * Open server socket and start loop.
-   * @param args All are ignored.
-   */
+
+
+  public static void showDialog(TextArea textArea){
+    JDialog jDialog = new JDialog();
+    textArea.setEditable(false);
+    jDialog.getContentPane().add(textArea);
+    jDialog.setTitle("Server 1.0");
+    jDialog.setSize(400,200);
+    jDialog.addWindowListener(new WindowListener() {
+
+      @Override
+      public void windowOpened(WindowEvent e) {
+
+      }
+
+      @Override
+      public void windowClosing(WindowEvent e) {
+        System.exit(0);
+      }
+
+      @Override
+      public void windowClosed(WindowEvent e) {
+
+      }
+
+      @Override
+      public void windowIconified(WindowEvent e) {
+
+      }
+
+      @Override
+      public void windowDeiconified(WindowEvent e) {
+
+      }
+
+      @Override
+      public void windowActivated(WindowEvent e) {
+
+      }
+
+      @Override
+      public void windowDeactivated(WindowEvent e) {
+
+      }
+
+    });
+    jDialog.show();
+  }
+
   public static void main(String[] args) {
+    showDialog(Logger.getInstance());
     ServerSocket listener = null;
     try {
       listener = new ServerSocket(9001);
     } catch (IOException e) {
-      System.out.println("Cannot create server on port 9001");
+      log("Cannot create server on port 9001");
       System.exit(0);
     }
     loop(listener);
@@ -136,7 +189,7 @@ public class Server {
    * @param message String message.
    */
   private static void log(String message) {
-    System.out.println(message);
+    Logger.log(message);
   }
 
 }

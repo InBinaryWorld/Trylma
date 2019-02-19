@@ -87,7 +87,7 @@ public class RealPlayer extends AbstractPlayer {
    */
   @Override
   public void sendMove(Movement movement) throws DisconnectException {
-    System.out.println(id + " Real move!");
+    Logger.log(id + " Real move!");
     try {
       out.writeObject("DO_MOVE");
       out.writeObject(movement);
@@ -144,7 +144,7 @@ public class RealPlayer extends AbstractPlayer {
       socket.close();
     } catch (IOException ignored) {
     }
-    System.out.println("Player disconnected :" + id.getValue());
+    Logger.log("Player disconnected :" + id.getValue());
     throw new DisconnectException();
   }
 

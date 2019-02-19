@@ -22,7 +22,7 @@ public class BotPlayer extends AbstractPlayer {
    * @return Movement object.
    */
   public Movement makeMove() {
-    System.out.println(id + " Bot move!");
+    Logger.log(id + " Bot move!");
     List<Coord> pawnList = board.getOwnersPawns(id);
     List<Coord> availableMoves;
     List<Movement> tmp = new ArrayList<>();
