@@ -19,10 +19,7 @@ The server supports one game at a time due to project requirements.
     
 
 ## License
-
-MIT
-
+MIT  
+Project realizet with [KantJ](https://github.com/KantJ)
 
 **Free Software!**
-    
-[Queries]: <https://github.com/InBinaryWorld/CompanyManager/tree/master/others/queries>
